@@ -1,10 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from "react";
+import RoutesFront from "./componnts/RoutesFront";
 
 function App() {
   return (
-    <p>sdsdshbjb</p>
+    <Fragment>
+      <RoutesFront />
+    </Fragment>
   );
 }
 
