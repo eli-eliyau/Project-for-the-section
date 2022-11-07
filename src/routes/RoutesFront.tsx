@@ -4,7 +4,7 @@ import SignIn from '../componnts/SignIn'
 import HeaderBar from '../componnts/HeaderBar'
 import ProjectPage from '../componnts/ProjectPage'
 interface IArr {
-    id:string
+    id:string;
     name: string;
     status: string;
     situation: string;
