@@ -3,6 +3,7 @@ import {Fragment, useEffect, useState} from 'react'
 import SignIn from '../componnts/SignIn'
 import HeaderBar from '../componnts/HeaderBar'
 import ProjectPage from '../componnts/ProjectPage'
+import Projects from '../componnts/Projects'
 interface IArr {
     id:string;
     name: string;
@@ -24,10 +25,11 @@ const RoutesFront=()=>{
 
 return (
 <Fragment>
+<HeaderBar onId={setProjectData}/>
     <Routes>
         <Route path='/' element={<Navigate replace to="/login"/>}/>
         <Route path='/login' element={<SignIn />}/>
-        <Route path='/projects' element={<HeaderBar onId={setProjectData}/>} />
+        <Route path='/projects' element={<Projects data={projectData}/>} />
         <Route path="/project" element={<ProjectPage id={projectData}/>} />
     </Routes>
 </Fragment>

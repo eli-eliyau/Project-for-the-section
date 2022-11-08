@@ -10,7 +10,6 @@ interface IArr {
 }
 
 const ProjectPage=({id}:Iprops)=>{
-    console.log(id);
     
 // const getProject=()=>{
     // // axios.post("http://localhost:3000/projectPage").then((res)=>{};
