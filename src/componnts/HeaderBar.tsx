@@ -59,33 +59,6 @@ const HeaderBar = ({onId}:IProps) => {
           </Toolbar>
         </AppBar>
       </Box>
-      <main>
-        <Box
-          style={{ display: "flex" }}
-          sx={{
-            absolute: "flex",
-            p:10,
-            display: "flex",
-            flexWrap: "wrap",
-            "& > :not(style)": {
-              // width: 128,
-              // height: 128,
-            },
-          }}
-        >
-          {projects?.map((item) => {
-            return (
-              <Toolbar>
-                <Projects
-                  name={item.name}
-                  status={item.status}
-                  situation={item.situation}
-                />
-               </Toolbar>
-            );
-          })}
-        </Box>
-      </main>
     </>
   );
 };
