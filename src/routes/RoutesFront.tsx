@@ -13,8 +13,6 @@ interface IArr {
 
 const RoutesFront=()=>{
     
-    
-    
     const [projectData,setProjectData]=useState<IArr[]|undefined>()
     
     

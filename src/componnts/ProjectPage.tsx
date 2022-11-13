@@ -19,5 +19,3 @@ const ProjectPage=({id}:Iprops)=>{
 // }
 return <></>
 }
-
-export default ProjectPage
