@@ -8,14 +8,14 @@
 // projectTeam: { type
 // projectClient: { ty
 
-import {
-  Button,
-  Card,
-  TextareaAutosize,
-  TextField,
-} from "@mui/material";
+import { Button, Card, TextareaAutosize, TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+interface IProps {
+  onRefreshingforProjects: (ref: string) => void;
+}
 const a = [
   "שם",
   "סטטוס",
@@ -25,7 +25,7 @@ const a = [
   "צוות הפרויקט",
   "לקוח הפרויקט",
 ];
-const CreateNewProject = () => {
+const CreateNewProject = ({ onRefreshingforProjects }: IProps) => {
   const [name, setName] = useState<string>();
   const [status, setStatus] = useState<string>();
   const [situation, setSituation] = useState<string>();
@@ -34,8 +34,10 @@ const CreateNewProject = () => {
   const [projectDescription, setProjectDescription] = useState<string>();
   const [projectTeam, setProjectTeam] = useState<string>();
   const [projectClient, setProjectClient] = useState<string>();
+
+  const navigate = useNavigate();
   const DataNewProject = {
-    name:name,
+    name,
     status,
     situation,
     users,
@@ -44,13 +46,21 @@ const CreateNewProject = () => {
     projectTeam,
     projectClient,
   };
+  const ref="1"
   const postNewProject = (event: any) => {
     event.preventDefault();
     axios
       .post("http://localhost:3001/createNewProject", { DataNewProject })
-      .then((res) => {console.log(res.data)
+      .then((res) => {
+        console.log(res.data);
       })
       .catch((err) => console.log(err));
+      console.log(ref);
+
+    onRefreshingforProjects(ref);
+    console.log(ref);
+
+    navigate("/projects");
   };
   return (
     <>

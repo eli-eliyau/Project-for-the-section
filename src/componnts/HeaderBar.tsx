@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 interface IProps {
   onData: (id: IArr[] | undefined) => void;
+  refreshingforProjects: string |undefined;
 }
 interface IArr {
   _id: string;
@@ -15,11 +16,14 @@ interface IArr {
   status: string;
   situation: string;
 }
-const navItems = ["פרויקטים", "יצירת פרויקט"];
 
-const HeaderBar = ({ onData }: IProps) => {
+const HeaderBar = ({ onData, refreshingforProjects }: IProps) => {
   const [projects, setProjects] = useState<IArr[]>();
-  const [getProjectData, setGetProjectData] = useState<Boolean>();
+  const [getProjectData, setGetProjectData] = useState<Boolean>(false);
+  const [g, setG] = useState<string |undefined>(refreshingforProjects);
+    
+console.log(g);
+
   const navigte = useNavigate();
   useEffect(() => {
     //מביא את הפרויקטים לדף הבית
@@ -28,11 +32,14 @@ const HeaderBar = ({ onData }: IProps) => {
       .then((res) => {
         setProjects(res.data);
         onData(res.data);
+        setGetProjectData(false)
+        // setG(false)
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [getProjectData]);
+
+  }, [getProjectData ||g]);
 
   return (
     <>
@@ -50,8 +57,8 @@ const HeaderBar = ({ onData }: IProps) => {
               <Button
                 sx={{ color: "#fff" }}
                 onClick={() => {
-                  navigte("/projects");
                   setGetProjectData(true);
+                  navigte("/projects");
                 }}
               >
                 {/* {item} */}

@@ -4,8 +4,6 @@ import SignIn from "../componnts/SignIn";
 import HeaderBar from "../componnts/HeaderBar";
 import ProjectPage from "../componnts/projectPage/ProjectPage";
 import Projects from "../componnts/projectsPage/Projects";
-import newTask from "../componnts/createNewTask/newTask";
-import NewTask from "../componnts/createNewTask/newTask";
 import CreateNewProject from "../componnts/createNewProjectPage/createNewProject";
 interface IArr {
   _id: string;
@@ -17,10 +15,11 @@ interface IArr {
 const RoutesFront = () => {
   const [projectData, setProjectData] = useState<IArr[] | undefined>();
   const [projectId, setProjectId] = useState<string>();
-
+  const [refreshingforProjects, setRefreshingforProjects] = useState<string |undefined>();//?
+console.log(refreshingforProjects);
   return (
     <Fragment>
-      <HeaderBar onData={setProjectData} />
+      <HeaderBar onData={setProjectData} refreshingforProjects={refreshingforProjects}/>
       <Routes>
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<SignIn />} />
@@ -34,7 +33,7 @@ const RoutesFront = () => {
         />
             
         
-        <Route path="/create-new-project" element={<CreateNewProject/>}/>
+        <Route path="/create-new-project" element={<CreateNewProject onRefreshingforProjects={setRefreshingforProjects}/>}/>
       </Routes>
     </Fragment>
   );

@@ -18,6 +18,7 @@ interface IProps {
   projectId: string | undefined;
   onEnterEditProject: (enter: boolean) => void;
   dataProject: IData | undefined;
+  onRefreshingforProject:(ref:boolean)=>void
 }
 
 const a = [
@@ -43,6 +44,7 @@ const a = [
 const EditProjectPage = ({
   projectId,
   onEnterEditProject,
+  onRefreshingforProject,
   dataProject,
 }: IProps) => {
   const [name, setName] = useState<string | undefined>(dataProject?.name);
@@ -86,10 +88,8 @@ const EditProjectPage = ({
         console.log(res.data);
       })
       .catch((err) => console.log(err));
+      onRefreshingforProject(true)
     onEnterEditProject(false);
-    {
-      <p>נשלח בהצלחה</p>;
-    }
   };
 
   return (

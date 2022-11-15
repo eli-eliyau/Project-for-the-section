@@ -11,9 +11,10 @@ import { Dayjs } from "dayjs";
 interface IProps {
   projectId: string | undefined;
   onEnterNewTask:(enter:boolean)=>void
+  onRefreshing:(ref:boolean)=> void
 }
 
-const NewTask = ({ projectId ,onEnterNewTask}: IProps) => {
+const NewTask = ({ projectId ,onEnterNewTask,onRefreshing}: IProps) => {
 
   const [startDate, setStartDate] = useState<Dayjs | null>();
   const [endDate, setEndDate] = useState<string>();
@@ -32,6 +33,7 @@ const NewTask = ({ projectId ,onEnterNewTask}: IProps) => {
         console.log(res.data);
       })
       .catch((err) => console.log(err));
+    onRefreshing(true)
       onEnterNewTask(false)
   };
   return (

@@ -40,8 +40,9 @@ const ProjectPage = ({ projectId }: IProps) => {
   const [enterEditProject, setEnterEditProject] =
     React.useState<boolean>(false);
   const [enterNewTask, setEnterNewTask] = React.useState<boolean>(false);
-  const [refreshing, setRefreshing] = React.useState<boolean>(false);
-  const navigate = useNavigate();
+  const [refreshingforTask, setRefreshingforTask] = React.useState<boolean>(false);
+  const [refreshingforProject, setRefreshingforProject] = React.useState<boolean>(false);
+
   React.useEffect(() => {
     //בקשה לקבל את הנתונים של המפרויקט
     axios
@@ -49,10 +50,10 @@ const ProjectPage = ({ projectId }: IProps) => {
       .then((res) => {
         setDataProject(res.data);
         console.log(dataProject);
-        
+        setRefreshingforProject(false)
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [refreshingforProject]);
 
   React.useEffect(() => {
     //בקשה לקבלת כל המשימות
@@ -60,13 +61,16 @@ const ProjectPage = ({ projectId }: IProps) => {
       .post("http://localhost:3001/taskFoProject", { projectId: projectId })
       .then((res) => {
         setTask(res.data);
+        setRefreshingforTask(false)
       })
       .catch((err) => console.log(err));
-  }, [refreshing]);
+  }, [refreshingforTask]);
   return (
     <>
+        <Box marginTop={10} style={{background:"#b0b0b0a1"}}>
+
       {dataProject && (
-        <Box paddingTop={10}>
+        <>
           <header>
             <Typography
               sx={{ fontSize: 26 }}
@@ -98,8 +102,11 @@ const ProjectPage = ({ projectId }: IProps) => {
               </Stack>
             </Stack>
           </Toolbar>
-        </Box>
+          
+          </>
       )}
+      </Box>
+
       <Typography sx={{ fontSize: 26 }} color="text.secondary" gutterBottom>
         {"משימות"}
       </Typography>
@@ -157,20 +164,24 @@ const ProjectPage = ({ projectId }: IProps) => {
           </Button>
         </Stack>
       </Stack>
+
       {task?.map((item, key) => {
         return (
-          item.taskStatus === taskStatus && <Task taskData={item} key={key} onTaskStatus={setTaskStatus} onRefreshingToTask={setRefreshing}/>
+          item.taskStatus === taskStatus && <Task taskData={item} key={key} onTaskStatus={setTaskStatus} onRefreshingToTask={setRefreshingforTask}/>
         );
       })}
       {enterNewTask && (
-        <NewTask projectId={projectId} onEnterNewTask={setEnterNewTask} />
+        <NewTask projectId={projectId} onEnterNewTask={setEnterNewTask} onRefreshing={setRefreshingforTask}/>
       )}
       {enterEditProject && (
+        <>
         <EditProjectPage
           projectId={projectId}
           dataProject={dataProject}
           onEnterEditProject={setEnterEditProject}
+          onRefreshingforProject={setRefreshingforProject}
         />
+        </>
       )}
     </>
   );
