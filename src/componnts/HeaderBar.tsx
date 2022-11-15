@@ -5,29 +5,27 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { useState } from "react";
-import * as React from "react";
-import Projects from "./Projects";
-interface IProps{
-  onId:(id:IArr[]|undefined)=> void
+interface IProps {
+  onData: (id: IArr[] | undefined) => void;
 }
 interface IArr {
-  id:string
+  _id: string;
   name: string;
   status: string;
   situation: string;
 }
 const navItems = ["פרויקטים", "יצירת פרויקט"];
 
-const HeaderBar = ({onId}:IProps) => {
+const HeaderBar = ({ onData }: IProps) => {
   const [projects, setProjects] = useState<IArr[]>();
-// console.log(projects);
+  // console.log(projects);
 
   const getProjectData = () => {
     axios
-      .get("http://localhost:3000/projectsHome")
+      .get("http://localhost:3001/projectsHome")
       .then((res) => {
-         setProjects(res.data);  
-         onId(res.data);      
+        setProjects(res.data);
+        onData(res.data);
       })
       .catch((err) => {
         console.log(err);

@@ -34,7 +34,7 @@ export default function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     
-    axios.post("http://localhost:3000/login",{pass:data.get('password')})
+    axios.post("http://localhost:3001/login",{pass:data.get('password')})
     .then((response)=> {
       console.log(response.data);
       

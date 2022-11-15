@@ -1,26 +1,27 @@
 import * as React from "react";
 import Paper from "@mui/material/Paper";
-import { Box, Toolbar, Typography } from "@mui/material";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Box, Button, Toolbar, Typography } from "@mui/material";
+import {  useNavigate } from "react-router-dom";
 interface IDtat {
   data: IProps[] | undefined;
+  onId:(id:string)=> void
 }
 interface IProps {
-  id: string;
+  _id: string;
   name: string;
   status: string;
   situation: string;
 }
 
-const Projects = ({ data }: IDtat) => {
+const Projects = ({ data,onId }: IDtat) => {
+  const navigte =useNavigate()
   return (
     <>
       <Box
         style={{ background: "#e6e6e6" }}
         sx={{
           absolute: "flex",
-          p: 10,
+          mt: 10,
           display: "flex",
           flexWrap: "wrap",
           "& > :not(style)": {
@@ -31,8 +32,12 @@ const Projects = ({ data }: IDtat) => {
       >
         {data?.map((item) => {
           return (
+            
             <Toolbar>
-              <Link to="/project">
+              <Button onClick={()=>{  
+             onId(item._id)             
+              navigte("/project")
+            }}>
                 <Paper elevation={10}>
                   <Toolbar>
                     <Typography
@@ -48,8 +53,9 @@ const Projects = ({ data }: IDtat) => {
                     </Typography>
                   </Toolbar>
                 </Paper>
-              </Link>
+              </Button>
             </Toolbar>
+
           );
         })}
       </Box>
