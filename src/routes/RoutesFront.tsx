@@ -6,6 +6,7 @@ import ProjectPage from "../componnts/projectPage/ProjectPage";
 import Projects from "../componnts/projectsPage/Projects";
 import newTask from "../componnts/createNewTask/newTask";
 import NewTask from "../componnts/createNewTask/newTask";
+import CreateNewProject from "../componnts/createNewProjectPage/createNewProject";
 interface IArr {
   _id: string;
   name: string;
@@ -15,7 +16,7 @@ interface IArr {
 
 const RoutesFront = () => {
   const [projectData, setProjectData] = useState<IArr[] | undefined>();
-  const [idProject, setIdProject] = useState<string>();
+  const [projectId, setProjectId] = useState<string>();
 
   return (
     <Fragment>
@@ -25,14 +26,15 @@ const RoutesFront = () => {
         <Route path="/login" element={<SignIn />} />
         <Route
           path="/projects"
-          element={<Projects data={projectData} onId={setIdProject} />}
+          element={<Projects data={projectData} onId={setProjectId} />}
         />
         <Route
           path="/project"
-          element={<ProjectPage idProject={idProject} />}
-        >
+          element={<ProjectPage projectId={projectId} />}
+        />
             
-        </Route>
+        
+        <Route path="/create-new-project" element={<CreateNewProject/>}/>
       </Routes>
     </Fragment>
   );

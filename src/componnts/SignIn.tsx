@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
@@ -27,14 +28,17 @@ function Copyright(props: any) {
   );
 }
 
+
 const theme = createTheme();
 
 export default function SignIn() {
+const navigte =useNavigate()
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     
-    axios.post("http://localhost:3001/login",{pass:data.get('password')})
+    axios.post("http://localhost:3001/signInPage",{pass:data.get('password')})
     .then((response)=> {
       console.log(response.data);
       
@@ -42,6 +46,7 @@ export default function SignIn() {
       console.log(err);
       
     })
+    navigte("/projects")
     // console.log({
       // email: data.get('email'),
       // password: data.get('password'),

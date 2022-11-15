@@ -4,7 +4,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 interface IProps {
   onData: (id: IArr[] | undefined) => void;
 }
@@ -18,9 +19,10 @@ const navItems = ["פרויקטים", "יצירת פרויקט"];
 
 const HeaderBar = ({ onData }: IProps) => {
   const [projects, setProjects] = useState<IArr[]>();
-  // console.log(projects);
-
-  const getProjectData = () => {
+  const [getProjectData, setGetProjectData] = useState<Boolean>();
+  const navigte = useNavigate();
+  useEffect(() => {
+    //מביא את הפרויקטים לדף הבית
     axios
       .get("http://localhost:3001/projectsHome")
       .then((res) => {
@@ -30,7 +32,8 @@ const HeaderBar = ({ onData }: IProps) => {
       .catch((err) => {
         console.log(err);
       });
-  };
+  }, [getProjectData]);
+
   return (
     <>
       <Box>
@@ -44,15 +47,28 @@ const HeaderBar = ({ onData }: IProps) => {
               {"מדור מערכות מידע"}
             </Typography>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              {navItems.map((item) => (
-                <Button
-                  key={item}
-                  sx={{ color: "#fff" }}
-                  onClick={getProjectData}
-                >
-                  {item}
-                </Button>
-              ))}
+              <Button
+                sx={{ color: "#fff" }}
+                onClick={() => {
+                  navigte("/projects");
+                  setGetProjectData(true);
+                }}
+              >
+                {/* {item} */}
+                {"פרויקטים"}
+              </Button>
+              <Button
+                // key={item}
+                sx={{ color: "#fff" }}
+                onClick={() => {
+                  navigte("/create-new-project");
+                }}
+              >
+                {/* {item} */}
+                {"יצירת פרויקט"}
+              </Button>
+
+              {/* ))} */}
             </Box>
           </Toolbar>
         </AppBar>

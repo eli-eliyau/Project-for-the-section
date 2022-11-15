@@ -1,33 +1,22 @@
-/* eslint-disable react/jsx-no-duplicate-props */
 import * as React from "react";
 import Box from "@mui/material/Box";
-import {
-  Divider,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  TextField,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { Divider, Toolbar, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import axios from "axios";
 import Task from "./TaskFoProject";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NewTask from "../createNewTask/newTask";
-import { ListFormat } from "typescript";
-interface Iprops {
-  idProject: string | undefined;
+import EditProjectPage from "./EditProjectPage";
+interface IProps {
+  projectId: string | undefined;
 }
 interface IData {
   _id: string;
-  name?: string;
-  status?: string;
-  situation?: string;
+  name: string;
+  status: string;
+  situation: string;
   users: string;
   topUser: string;
   projectDescription: string;
@@ -36,7 +25,7 @@ interface IData {
 }
 interface ITask {
   _id: string;
-  projetId: string;
+  projectId: string;
   taskDescription: string;
   startDate: string;
   endDate: string;
@@ -44,18 +33,23 @@ interface ITask {
   taskStatus: string;
 }
 
-const ProjectPage = ({ idProject }: Iprops) => {
-  const [dataProject, setDataProject] = React.useState<IData>();
+const ProjectPage = ({ projectId }: IProps) => {
+  const [dataProject, setDataProject] = React.useState<IData|undefined>();
   const [task, setTask] = React.useState<ITask[]>();
-  const [taskStatus, setTaskStatus] = React.useState<string>();
-  const navigte = useNavigate();
-
+  const [taskStatus, setTaskStatus] = React.useState<string >();
+  const [enterEditProject, setEnterEditProject] =
+    React.useState<boolean>(false);
+  const [enterNewTask, setEnterNewTask] = React.useState<boolean>(false);
+  const [refreshing, setRefreshing] = React.useState<boolean>(false);
+  const navigate = useNavigate();
   React.useEffect(() => {
     //בקשה לקבל את הנתונים של המפרויקט
     axios
-      .post("http://localhost:3001/projectPage", { _id: idProject })
+      .post("http://localhost:3001/projectPage", { projectId: projectId })
       .then((res) => {
         setDataProject(res.data);
+        console.log(dataProject);
+        
       })
       .catch((err) => console.log(err));
   }, []);
@@ -63,12 +57,12 @@ const ProjectPage = ({ idProject }: Iprops) => {
   React.useEffect(() => {
     //בקשה לקבלת כל המשימות
     axios
-      .post("http://localhost:3001/taskFoProject", { idProject: idProject })
+      .post("http://localhost:3001/taskFoProject", { projectId: projectId })
       .then((res) => {
         setTask(res.data);
       })
       .catch((err) => console.log(err));
-  }, [taskStatus]);
+  }, [refreshing]);
   return (
     <>
       {dataProject && (
@@ -82,9 +76,7 @@ const ProjectPage = ({ idProject }: Iprops) => {
               {`פרויקט ${dataProject.name}`}
             </Typography>
           </header>
-
           <Typography>{`תיאור הפרוקייט:${dataProject.projectDescription}`}</Typography>
-
           <Toolbar>
             <Stack
               spacing={2}
@@ -93,25 +85,14 @@ const ProjectPage = ({ idProject }: Iprops) => {
             >
               <Stack>
                 <Typography>{`סטטוס:${dataProject.status} `}</Typography>
-
                 <Typography>{`מצב:${dataProject.situation}`}</Typography>
               </Stack>
               <Stack></Stack>
-
-              <Stack
-              // direction="row"
-              // spacing={3}
-              // divider={<Divider orientation="horizontal" flexItem/>}
-              >
+              <Stack>
                 <Typography>{`יש משתמשים:${dataProject.users}`}</Typography>
                 <Typography>{`משתמש מוביל:${dataProject.topUser}`}</Typography>
               </Stack>
-
-              <Stack
-              // direction="row"
-              // spacing={3}
-              // divider={<Divider orientation="horizontal" flexItem/>}
-              >
+              <Stack>
                 <Typography>{`צוות הפרוייקט:${dataProject.projectTeam}`}</Typography>
                 <Typography>{`לקוח הפרוייקט:${dataProject.projectClient}`}</Typography>
               </Stack>
@@ -134,6 +115,8 @@ const ProjectPage = ({ idProject }: Iprops) => {
             sx={{ width: 150, boxShadow: 2 }}
             onClick={() => {
               setTaskStatus("פעיל");
+              setEnterEditProject(false);
+              setEnterNewTask(false);
             }}
           >
             {"פעיל"}
@@ -144,6 +127,8 @@ const ProjectPage = ({ idProject }: Iprops) => {
             sx={{ width: 150, boxShadow: 2 }}
             onClick={() => {
               setTaskStatus("לא פעיל");
+              setEnterEditProject(false);
+              setEnterNewTask(false);
             }}
           >
             {"לא פעיל"}
@@ -152,19 +137,41 @@ const ProjectPage = ({ idProject }: Iprops) => {
             variant="outlined"
             sx={{ width: 150, boxShadow: 2, mt: 3 }}
             onClick={() => {
-              setTaskStatus("");
+              setEnterNewTask(true);
+              setEnterEditProject(false);
+              setTaskStatus("")
             }}
           >
             {"משימה חדשה"}
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{ width: 150, boxShadow: 2, mt: 3 }}
+            onClick={() => {
+              setEnterEditProject(true);
+              setEnterNewTask(false);
+              setTaskStatus("")
+            }}
+          >
+            {"עריכת פרויקט"}
           </Button>
         </Stack>
       </Stack>
       {task?.map((item, key) => {
         return (
-          item.taskStatus === taskStatus && <Task taskData={item} key={key} />
+          item.taskStatus === taskStatus && <Task taskData={item} key={key} onTaskStatus={setTaskStatus} onRefreshingToTask={setRefreshing}/>
         );
       })}
-      {taskStatus === "" && <NewTask idProject={idProject} />}
+      {enterNewTask && (
+        <NewTask projectId={projectId} onEnterNewTask={setEnterNewTask} />
+      )}
+      {enterEditProject && (
+        <EditProjectPage
+          projectId={projectId}
+          dataProject={dataProject}
+          onEnterEditProject={setEnterEditProject}
+        />
+      )}
     </>
   );
 };

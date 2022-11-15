@@ -4,86 +4,88 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { Stack } from "@mui/system";
 import axios from "axios";
 // import UnstyledInputBasic from "./s";
-
-interface Iprops {
-  idProject: string | undefined;
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Dayjs } from "dayjs";
+interface IProps {
+  projectId: string | undefined;
+  onEnterNewTask:(enter:boolean)=>void
 }
 
-const NewTask = ({idProject}:Iprops) => {
-  const [startDate, setStartDate] = useState<string>();
+const NewTask = ({ projectId ,onEnterNewTask}: IProps) => {
+
+  const [startDate, setStartDate] = useState<Dayjs | null>();
   const [endDate, setEndDate] = useState<string>();
   const [taskDescription, setTaskDescription] = useState<string>();
-console.log(idProject);
-
-  const postNewTask=(event:any)=>{
-    event.preventDefault(); 
-    axios.post('http://localhost:3001/createNewTask',{projetId:idProject,taskDescription:taskDescription,startDate:startDate,endDate:endDate}).then((res)=>{console.log(res.data)
-    }).catch((err)=>console.log(err)
-    )
     
-  }
-
+  const postNewTask = (event: any) => {
+    event.preventDefault();
+    axios
+      .post("http://localhost:3001/createNewTask", {
+        projectId: projectId,
+        taskDescription: taskDescription,
+        startDate: startDate,
+        endDate: endDate,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+      onEnterNewTask(false)
+  };
   return (
-    <>
-    <form onSubmit={postNewTask}>
-      <Card classes sx={{ p: 2, mt: 5, background: "#b0b0b0a1" }}>
-        <Stack spacing={3}>
-          {/* <UnstyledInputBasic /> */}
-          <TextareaAutosize
-            required
-            aria-label="maximum height"
-            placeholder={"תיאור משימה..."}
-            style={{ width: 500, height: 150 }}
-            onChange={(e) => {
-              setTaskDescription(e.target.value);
-            }}
-          />
-          <Stack
-            direction="row"
-            spacing={2}
-            divider={<Divider orientation="vertical" />}
-          >
-            <TextField
-              label="תאריך התחלה"
-              variant="outlined"
+      <form onSubmit={postNewTask}>
+        <Card classes sx={{ p: 2, mt: 5, background: "#b0b0b0a1" }}>
+          <Stack spacing={3}>
+            {/* <UnstyledInputBasic /> */}
+            <TextareaAutosize
               required
-              // value={startDate}
-              // error={!a}
+              aria-label="maximum height"
+              placeholder={"תיאור משימה..."}
+              style={{ width: 500, height: 150 }}
               onChange={(e) => {
-                setStartDate(e.target.value);
+                setTaskDescription(e.target.value);
               }}
-              size={"small"}
-              type="text"
-              // helperText={!a && "הכנס תיאור"}
             />
-            <TextField
-              label="תאריך סיום"
-              variant="outlined"
-              required
-              // value={andDate}
-              // error={!a}
-              onChange={(e) => {
-                setEndDate(e.target.value);
-              }}
-              size={"small"}
-              type="text"
-              // helperText={!a && "הכנס תיאור"}
-            />
-
-            <Button
-              type="submit"
-              variant="outlined"
-              sx={{ width: 150, boxShadow: 2, mt: 3 }}
-              // onSubmit={() => {}}
+            <Stack
+              direction="row"
+              spacing={2}
+              divider={<Divider orientation="vertical" />}
             >
-              {"שליחה >"}
-            </Button>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="תאריך התחלה"
+                  value={startDate}
+                  onChange={(newValue) => {
+                    setStartDate(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+              <TextField
+                label="תאריך סיום"
+                variant="outlined"
+                required
+                // value={andDate}
+                // error={!a}
+                onChange={(e) => {
+                  setEndDate(e.target.value);
+                }}
+                size={"small"}
+                type="text"
+              />
+              <Button
+                type="submit"
+                variant="outlined"
+                sx={{ width: 150, boxShadow: 2, mt: 3 }}
+              >
+                {"שליחה >"}
+              </Button>
+            </Stack>
           </Stack>
-        </Stack>
-        
-      </Card>
+        </Card>
       </form>
-    </>
   );
 };
 export default NewTask;

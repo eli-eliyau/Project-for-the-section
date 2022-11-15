@@ -31,11 +31,14 @@ const Projects = ({ data,onId }: IDtat) => {
         }}
       >
         {data?.map((item) => {
+          
           return (
             
             <Toolbar>
               <Button onClick={()=>{  
-             onId(item._id)             
+             onId(item._id) 
+            //  console.log(item._id);
+                         
               navigte("/project")
             }}>
                 <Paper elevation={10}>
