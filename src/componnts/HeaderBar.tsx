@@ -8,7 +8,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 interface IProps {
   onData: (id: IArr[] | undefined) => void;
-  refreshingforProjects: string |undefined;
 }
 interface IArr {
   _id: string;
@@ -17,12 +16,10 @@ interface IArr {
   situation: string;
 }
 
-const HeaderBar = ({ onData, refreshingforProjects }: IProps) => {
+const HeaderBar = ({ onData}: IProps) => {
   const [projects, setProjects] = useState<IArr[]>();
   const [getProjectData, setGetProjectData] = useState<Boolean>(false);
-  const [g, setG] = useState<string |undefined>(refreshingforProjects);
     
-console.log(g);
 
   const navigte = useNavigate();
   useEffect(() => {
@@ -33,13 +30,12 @@ console.log(g);
         setProjects(res.data);
         onData(res.data);
         setGetProjectData(false)
-        // setG(false)
       })
       .catch((err) => {
         console.log(err);
       });
 
-  }, [getProjectData ||g]);
+  }, [getProjectData ]);
 
   return (
     <>

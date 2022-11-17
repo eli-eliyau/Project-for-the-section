@@ -3,10 +3,8 @@ import Box from "@mui/material/Box";
 import { Divider, Toolbar, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
 import axios from "axios";
 import Task from "./TaskFoProject";
-import { useNavigate } from "react-router-dom";
 import NewTask from "../createNewTask/newTask";
 import EditProjectPage from "./EditProjectPage";
 interface IProps {

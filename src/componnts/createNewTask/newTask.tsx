@@ -20,7 +20,7 @@ const NewTask = ({ projectId ,onEnterNewTask,onRefreshing}: IProps) => {
   const [endDate, setEndDate] = useState<string>();
   const [taskDescription, setTaskDescription] = useState<string>();
     
-  const postNewTask = (event: any) => {
+  const postNewTask = (event:  React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     axios
       .post("http://localhost:3001/createNewTask", {

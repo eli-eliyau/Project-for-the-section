@@ -40,7 +40,7 @@ const EditTaskPage = ({ taskData,onRefreshing}: IProps) => {
     setTaskStatus(event.target.value as string);
   };
 
-  const putEditTask = (event: any) => {
+  const putEditTask = (event:  React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     //בקשה לעדכן את המשימה
     axios
@@ -53,7 +53,7 @@ const EditTaskPage = ({ taskData,onRefreshing}: IProps) => {
       })
       .then((res) => {})
       .catch((err) => console.log(err));
-      setEnter(false);
+       setEnter(false);
       onRefreshing(true)
    
   };

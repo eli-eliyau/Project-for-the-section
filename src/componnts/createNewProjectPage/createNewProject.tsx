@@ -14,7 +14,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface IProps {
-  onRefreshingforProjects: (ref: string) => void;
 }
 const a = [
   "שם",
@@ -25,7 +24,7 @@ const a = [
   "צוות הפרויקט",
   "לקוח הפרויקט",
 ];
-const CreateNewProject = ({ onRefreshingforProjects }: IProps) => {
+const CreateNewProject = ({ }: IProps) => {
   const [name, setName] = useState<string>();
   const [status, setStatus] = useState<string>();
   const [situation, setSituation] = useState<string>();
@@ -46,20 +45,14 @@ const CreateNewProject = ({ onRefreshingforProjects }: IProps) => {
     projectTeam,
     projectClient,
   };
-  const ref="1"
-  const postNewProject = (event: any) => {
+  
+  const postNewProject = (event:  React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     axios
       .post("http://localhost:3001/createNewProject", { DataNewProject })
       .then((res) => {
-        console.log(res.data);
       })
       .catch((err) => console.log(err));
-      console.log(ref);
-
-    onRefreshingforProjects(ref);
-    console.log(ref);
-
     navigate("/projects");
   };
   return (

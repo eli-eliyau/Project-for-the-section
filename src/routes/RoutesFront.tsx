@@ -15,11 +15,10 @@ interface IArr {
 const RoutesFront = () => {
   const [projectData, setProjectData] = useState<IArr[] | undefined>();
   const [projectId, setProjectId] = useState<string>();
-  const [refreshingforProjects, setRefreshingforProjects] = useState<string |undefined>();//?
-console.log(refreshingforProjects);
+
   return (
     <Fragment>
-      <HeaderBar onData={setProjectData} refreshingforProjects={refreshingforProjects}/>
+      <HeaderBar onData={setProjectData} />
       <Routes>
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<SignIn />} />
@@ -33,7 +32,7 @@ console.log(refreshingforProjects);
         />
             
         
-        <Route path="/create-new-project" element={<CreateNewProject onRefreshingforProjects={setRefreshingforProjects}/>}/>
+        <Route path="/create-new-project" element={<CreateNewProject />}/>
       </Routes>
     </Fragment>
   );
