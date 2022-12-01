@@ -26,7 +26,7 @@ const Projects = ({ data, onId }: IDtat) => {
           flexWrap: "wrap",
           "& > :not(style)": {
             width: 150,
-            height: 180,
+            height: 181,
           },
         }}
       >
