@@ -12,14 +12,12 @@ import {
   Toolbar,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import "dayjs/locale/es-us";
+import "dayjs/locale/en";
 import { DatePicker } from "@mui/x-date-pickers";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import Task from "./TaskFoProject";
+import {  useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import relativeTime from "dayjs/plugin/relativeTime";
 interface ITask {
   _id: string;
   projectId: string;
@@ -40,15 +38,19 @@ const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
   );
   const [taskStatus, setTaskStatus] = useState<string>(taskData.taskStatus);
   const [enter, setEnter] = useState<boolean>(true);
+
   //קשור לתאריך מאיזה פורמט יהיה
-  const [locale, setLocale] = useState<typeof locales[number]>("es-us");
-  const locales = ["es-us"] as const;
-  const [startDate, setStartDate] = useState<Dayjs | null | string>(
+  const locales = ["en"] as const;
+  const [locale, setLocale] = useState<typeof locales[number]>("en");
+  const [startDate, setStartDate] = useState<Date | null | string>(
     taskData.startDate
   );
+  console.log(startDate);
+  
   const [endDate, setEndDate] = useState<Dayjs | null | string>(
-    taskData.endDate
+    dayjs(taskData.endDate)
   );
+console.log(endDate);
 
   const handleChange = (event: SelectChangeEvent) => {
     setTaskStatus(event.target.value as string);

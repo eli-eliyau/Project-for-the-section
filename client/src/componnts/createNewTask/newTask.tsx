@@ -9,7 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/fr";
-import { format } from "path";
+
 interface IProps {
   projectId: string | undefined;
   onEnterNewTask: (enter: boolean) => void;
@@ -18,26 +18,21 @@ interface IProps {
 
 const NewTask = ({ projectId, onEnterNewTask, onRefreshing }: IProps) => {
   const [taskDescription, setTaskDescription] = useState<string>();
+
   //קשור לתאריך מאיזה פורמט יהיה
 
   const [locale, setLocale] = useState<typeof locales[number]>("fr");
   const locales = ["fr"] as const;
-  const [startDate1, setStartDate1] = useState<Dayjs | null | string>(
-    dayjs()
-    
-  );
+  const [startDate1, setStartDate1] = useState<Dayjs | null | string>(dayjs());
   const [startDate, setStartDate] = useState<Dayjs | null | string>(
     dayjs().format("DD/MM/YYYY")
-
   );
+  
   const [endDate, setEndDate] = useState<Dayjs | null | string>(
     dayjs().format("DD/MM/YYYY")
   );
-  const [endDate1, setEndDate1] = useState<Dayjs | null | string>(
-    dayjs()
-    
-  );
-  
+  const [endDate1, setEndDate1] = useState<Dayjs | null | string>(dayjs());
+
   const postNewTask = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     axios
@@ -78,11 +73,10 @@ const NewTask = ({ projectId, onEnterNewTask, onRefreshing }: IProps) => {
               <DatePicker
                 label="תאריך התחלה"
                 value={startDate1}
-                onChange={(newValue) => {setStartDate1(newValue)
-                  setStartDate(
-    dayjs(newValue).format("DD/MM/YYYY")
-
-                  )}}
+                onChange={(newValue) => {
+                  setStartDate1(newValue);
+                  setStartDate(dayjs(newValue).format("DD/MM/YYYY"));
+                }}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
@@ -93,8 +87,10 @@ const NewTask = ({ projectId, onEnterNewTask, onRefreshing }: IProps) => {
               <DatePicker
                 label="תאריך סיום"
                 value={endDate1}
-                onChange={(newValue) => {setEndDate1(newValue)
-                  setEndDate(dayjs(newValue).format("DD/MM/YYYY"))}}
+                onChange={(newValue) => {
+                  setEndDate1(newValue);
+                  setEndDate(dayjs(newValue).format("DD/MM/YYYY"));
+                }}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
