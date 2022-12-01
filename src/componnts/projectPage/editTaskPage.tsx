@@ -11,10 +11,15 @@ import {
   TextField,
   Toolbar,
 } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/es-us";
+import { DatePicker } from "@mui/x-date-pickers";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Task from "./TaskFoProject";
-
+import dayjs, { Dayjs } from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import relativeTime from "dayjs/plugin/relativeTime";
 interface ITask {
   _id: string;
   projectId: string;
@@ -26,21 +31,30 @@ interface ITask {
 }
 interface IProps {
   taskData: ITask;
-  onRefreshing:(ref: boolean) => void;
+  onRefreshing: (ref: boolean) => void;
 }
 
-const EditTaskPage = ({ taskData,onRefreshing}: IProps) => {
-  const [taskDescription, setTaskDescription] = useState<string>(taskData.taskDescription);
-  const [startDate, setStartDate] = useState<string>(taskData.startDate);
-  const [endDate, setEndDate] = useState<string>(taskData.endDate);
+const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
+  const [taskDescription, setTaskDescription] = useState<string>(
+    taskData.taskDescription
+  );
   const [taskStatus, setTaskStatus] = useState<string>(taskData.taskStatus);
   const [enter, setEnter] = useState<boolean>(true);
+  //קשור לתאריך מאיזה פורמט יהיה
+  const [locale, setLocale] = useState<typeof locales[number]>("es-us");
+  const locales = ["es-us"] as const;
+  const [startDate, setStartDate] = useState<Dayjs | null | string>(
+    taskData.startDate
+  );
+  const [endDate, setEndDate] = useState<Dayjs | null | string>(
+    taskData.endDate
+  );
 
   const handleChange = (event: SelectChangeEvent) => {
     setTaskStatus(event.target.value as string);
   };
 
-  const putEditTask = (event:  React.FormEvent<HTMLFormElement>) => {
+  const putEditTask = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     //בקשה לעדכן את המשימה
     axios
@@ -53,10 +67,11 @@ const EditTaskPage = ({ taskData,onRefreshing}: IProps) => {
       })
       .then((res) => {})
       .catch((err) => console.log(err));
-       setEnter(false);
-      onRefreshing(true)
-   
+    setEnter(false);
+    onRefreshing(true);
   };
+  // dayjs.extend(relativeTime)
+
   return (
     <>
       {enter && (
@@ -80,34 +95,28 @@ const EditTaskPage = ({ taskData,onRefreshing}: IProps) => {
                   spacing={2}
                   divider={<Divider orientation="vertical" />}
                 >
-                  <TextField
-                    label="תאריך התחלה"
-                    value={startDate}
-                    variant="outlined"
-                    required
-                    // value={startDate}
-                    // error={!a}
-                    onChange={(e) => {
-                      setStartDate(e.target.value);
-                    }}
-                    size={"small"}
-                    type="text"
-                    // helperText={!a && "הכנס תיאור"}
-                  />
-                  <TextField
-                    label="תאריך סיום"
-                    value={endDate}
-                    variant="outlined"
-                    required
-                    // value={andDate}
-                    // error={!a}
-                    onChange={(e) => {
-                      setEndDate(e.target.value);
-                    }}
-                    size={"small"}
-                    type="text"
-                    // helperText={!a && "הכנס תיאור"}
-                  />
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    adapterLocale={locale}
+                  >
+                    <DatePicker
+                      label={"תאריך התחלה"}
+                      value={startDate}
+                      onChange={(newValue) => setStartDate(dayjs(newValue).format('DD/MM/YYYY'))}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    adapterLocale={locale}
+                  >
+                    <DatePicker
+                      label={"תאירך סיום"}
+                      value={endDate}
+                      onChange={(newValue) => setEndDate(dayjs(newValue).format('DD/MM/YYYY'))}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
                   <Select
                     required
                     label="סטטוס משימה"

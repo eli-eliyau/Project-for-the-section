@@ -6,6 +6,8 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Api from "./Api";
+import { Stack } from "@mui/system";
 interface IProps {
   onData: (id: IArr[] | undefined) => void;
 }
@@ -16,10 +18,9 @@ interface IArr {
   situation: string;
 }
 
-const HeaderBar = ({ onData}: IProps) => {
+const HeaderBar = ({ onData }: IProps) => {
   const [projects, setProjects] = useState<IArr[]>();
   const [getProjectData, setGetProjectData] = useState<Boolean>(false);
-    
 
   const navigte = useNavigate();
   useEffect(() => {
@@ -29,13 +30,12 @@ const HeaderBar = ({ onData}: IProps) => {
       .then((res) => {
         setProjects(res.data);
         onData(res.data);
-        setGetProjectData(false)
+        setGetProjectData(false);
       })
       .catch((err) => {
         console.log(err);
       });
-
-  }, [getProjectData ]);
+  }, [getProjectData]);
 
   return (
     <>

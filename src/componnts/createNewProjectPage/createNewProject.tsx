@@ -1,20 +1,9 @@
-/* eslint-disable no-lone-blocks */
-// name: { type: Strin
-// status: { type: Str
-// situation: { type:
-// users: { type: Stri
-// topUser: { type: St
-// projectDescription:
-// projectTeam: { type
-// projectClient: { ty
-
 import { Button, Card, TextareaAutosize, TextField } from "@mui/material";
+import { Box } from "@mui/system";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface IProps {
-}
 const a = [
   "שם",
   "סטטוס",
@@ -24,7 +13,8 @@ const a = [
   "צוות הפרויקט",
   "לקוח הפרויקט",
 ];
-const CreateNewProject = ({ }: IProps) => {
+
+const CreateNewProject = () => {
   const [name, setName] = useState<string>();
   const [status, setStatus] = useState<string>();
   const [situation, setSituation] = useState<string>();
@@ -45,30 +35,33 @@ const CreateNewProject = ({ }: IProps) => {
     projectTeam,
     projectClient,
   };
-  
-  const postNewProject = (event:  React.FormEvent<HTMLFormElement>) => {
+
+  const postNewProject = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     axios
       .post("http://localhost:3001/createNewProject", { DataNewProject })
-      .then((res) => {
-      })
+      .then((res) => {})
       .catch((err) => console.log(err));
     navigate("/projects");
   };
   return (
     <>
       <form onSubmit={postNewProject}>
-        <Card sx={{ p: 2, mt: 10, background: "#b0b0b0a1" }}>
+        <Card
+          sx={{
+            p: 2,
+            mt: 10,
+            background: "#b0b0b0a1",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           {/* <Stack spacing={3}> */}
           {a?.map((item) => {
             console.log();
 
             return (
-              // <Stack
-              //   direction="row"
-              //   spacing={2}
-              //   divider={<Divider orientation="vertical" />}
-              // >
               <TextField
                 style={{ padding: 5 }}
                 label={item}

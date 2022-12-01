@@ -95,7 +95,10 @@ const EditProjectPage = ({
   return (
     <>
       <form onSubmit={postNewProject}>
-        <Card sx={{ p: 2, mt: 10, background: "#b0b0b0a1" }}>
+        <Card sx={{ p: 2, mt: 10, background: "#b0b0b0a1",
+ display: "flex",
+ flexDirection: "column",
+ alignItems: "center" }}>
           <TextField
           value={name}
             style={{ padding: 5 }}

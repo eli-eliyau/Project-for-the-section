@@ -15,6 +15,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
+interface IProps {
+  onUserToken: (token: string|undefined) => void;
+}
+
 function Copyright(props: any) {
   return (
     <Typography
@@ -34,13 +38,10 @@ function Copyright(props: any) {
 }
 
 const theme = createTheme();
-export default function SignIn() {
-
+export default function SignIn({ onUserToken }: IProps) {
   const navigte = useNavigate();
-  const [to,setTo]=React.useState<any>()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -49,30 +50,23 @@ export default function SignIn() {
       .then((res) => {
         console.log(res.data.token);
         // setTo(res.data.token)
-      // console.log(to);
-       axios
-        .get("http://localhost:3001/authenticationToken", {
-          headers: {
-            "x-api-key":res.data.token,
-          },
-        })
-        .then((res) => navigte("/projects")
-        )
-        .catch((err) => console.log(err));
-           
+        // console.log(to);
+        axios
+          .get("http://localhost:3001/authenticationToken", {
+            headers: {
+              "x-api-key": res.data.token,
+            },
+          })
+          .then((res) => {
+            onUserToken(res.data.token);
+            navigte("/projects");
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => {
         console.log(err);
       });
-      
-     
-     
-     
-     
-     
-     
-     
-     
+
     // console.log({
     // email: data.get('email'),
     // password: data.get('password'),
@@ -96,7 +90,7 @@ export default function SignIn() {
             {/* <LockOutlinedIcon /> */}
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {"ברוך הבא למערכת"}
           </Typography>
           <Box
             component="form"
@@ -108,9 +102,9 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
+              id="name"
+              label="שם"
+              name="name"
               autoComplete="email"
               autoFocus
             />
@@ -119,7 +113,7 @@ export default function SignIn() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="סיסמה"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -134,7 +128,7 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {"התחברות"}
             </Button>
             <Grid container>
               <Grid item xs>

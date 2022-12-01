@@ -1,10 +1,10 @@
 import * as React from "react";
 import Paper from "@mui/material/Paper";
 import { Box, Button, Toolbar, Typography } from "@mui/material";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 interface IDtat {
   data: IProps[] | undefined;
-  onId:(id:string)=> void
+  onId: (id: string) => void;
 }
 interface IProps {
   _id: string;
@@ -13,8 +13,8 @@ interface IProps {
   situation: string;
 }
 
-const Projects = ({ data,onId }: IDtat) => {
-  const navigte =useNavigate()
+const Projects = ({ data, onId }: IDtat) => {
+  const navigte = useNavigate();
   return (
     <>
       <Box
@@ -25,28 +25,27 @@ const Projects = ({ data,onId }: IDtat) => {
           display: "flex",
           flexWrap: "wrap",
           "& > :not(style)": {
-            width: 128,
-            height: 128,
+            width: 150,
+            height: 180,
           },
         }}
       >
         {data?.map((item) => {
-          
           return (
-            
             <Toolbar>
-              <Button onClick={()=>{  
-             onId(item._id) 
-            //  console.log(item._id);
-                         
-              navigte("/project")
-            }}>
+              <Button
+                onClick={() => {
+                  onId(item._id);
+
+                  navigte("/project");
+                }}
+              >
                 <Paper elevation={10}>
                   <Toolbar>
                     <Typography
                       variant="h6"
                       component="div"
-                      sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+                      sx={{ flexGrow: 1, display: { xs: "none", sm: "block" },width:100,height:150 }}
                     >
                       {`שם:${item.name}`}
                       <br />
@@ -58,7 +57,6 @@ const Projects = ({ data,onId }: IDtat) => {
                 </Paper>
               </Button>
             </Toolbar>
-
           );
         })}
       </Box>
