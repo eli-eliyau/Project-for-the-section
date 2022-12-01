@@ -4,35 +4,39 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import { useState } from "react";
-import * as React from "react";
-import Projects from "./Projects";
-interface IProps{
-  onId:(id:IArr[]|undefined)=> void
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Api from "./Api";
+import { Stack } from "@mui/system";
+interface IProps {
+  onData: (id: IArr[] | undefined) => void;
 }
 interface IArr {
-  id:string
+  _id: string;
   name: string;
   status: string;
   situation: string;
 }
-const navItems = ["פרויקטים", "יצירת פרויקט"];
 
-const HeaderBar = ({onId}:IProps) => {
+const HeaderBar = ({ onData }: IProps) => {
   const [projects, setProjects] = useState<IArr[]>();
-// console.log(projects);
+  const [getProjectData, setGetProjectData] = useState<Boolean>(false);
 
-  const getProjectData = () => {
+  const navigte = useNavigate();
+  useEffect(() => {
+    //מביא את הפרויקטים לדף הבית
     axios
-      .get("http://localhost:3000/projectsHome")
+      .get("http://localhost:3001/projectsHome")
       .then((res) => {
-         setProjects(res.data);  
-         onId(res.data);      
+        setProjects(res.data);
+        onData(res.data);
+        setGetProjectData(false);
       })
       .catch((err) => {
         console.log(err);
       });
-  };
+  }, [getProjectData]);
+
   return (
     <>
       <Box>
@@ -46,46 +50,32 @@ const HeaderBar = ({onId}:IProps) => {
               {"מדור מערכות מידע"}
             </Typography>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              {navItems.map((item) => (
-                <Button
-                  key={item}
-                  sx={{ color: "#fff" }}
-                  onClick={getProjectData}
-                >
-                  {item}
-                </Button>
-              ))}
+              <Button
+                sx={{ color: "#fff" }}
+                onClick={() => {
+                  setGetProjectData(true);
+                  navigte("/projects");
+                }}
+              >
+                {/* {item} */}
+                {"פרויקטים"}
+              </Button>
+              <Button
+                // key={item}
+                sx={{ color: "#fff" }}
+                onClick={() => {
+                  navigte("/create-new-project");
+                }}
+              >
+                {/* {item} */}
+                {"יצירת פרויקט"}
+              </Button>
+
+              {/* ))} */}
             </Box>
           </Toolbar>
         </AppBar>
       </Box>
-      <main>
-        <Box
-          style={{ display: "flex" }}
-          sx={{
-            absolute: "flex",
-            p:10,
-            display: "flex",
-            flexWrap: "wrap",
-            "& > :not(style)": {
-              // width: 128,
-              // height: 128,
-            },
-          }}
-        >
-          {projects?.map((item) => {
-            return (
-              <Toolbar>
-                <Projects
-                  name={item.name}
-                  status={item.status}
-                  situation={item.situation}
-                />
-               </Toolbar>
-            );
-          })}
-        </Box>
-      </main>
     </>
   );
 };
