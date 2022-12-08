@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -29,9 +30,7 @@ const Api = ({ task }: IProps) => {
       }
     }
     if (counter === 0) return 100;
-    else 
-
-    return Math.floor((amountTask - counter) * (100 / amountTask));
+    else return Math.floor((amountTask - counter) * (100 / amountTask));
   };
 
   let dataUrl = {
@@ -46,33 +45,43 @@ const Api = ({ task }: IProps) => {
   };
   return (
     <>
-    <Box
-  sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
->
-    <Box>
-      <Typography
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
         sx={{
-          fontSize: 26,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          width: {
+            xs: "100%", //0
+            sm: "100%", //600
+            md: "100%", //900
+            lg: "100%", //1200
+            xl: "100%", //1536
+          },
         }}
-        color="text.secondary"
-        gutterBottom
       >
-        {"משימות שבוצעו:"}
-      </Typography>
-      {task && (
-        <iframe
-          src={`https://quickchart.io/chart?w=300&h=40&c=${JSON.stringify(
-            dataUrl
-          )}`}
-          style={{ border: "0", width: 600, height: 80 }}
-          title="Iframe Example"
-        ></iframe>
-      )}
-      </Box>
-      </Box>
+          <Typography
+            sx={{
+              fontSize: 26,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            color="text.secondary"
+            gutterBottom
+          >
+            {"משימות שבוצעו:"}
+          </Typography>
+          {task && (
+            <iframe
+              src={`https://quickchart.io/chart?w=150&h=40&c=${JSON.stringify(
+                dataUrl
+              )}`}
+              style={{ border: "0", width: 300, height: 80 }}
+              title="Iframe Example"
+            ></iframe>
+          )}
+      </Grid>
     </>
   );
 };

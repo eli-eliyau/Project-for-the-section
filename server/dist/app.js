@@ -11,7 +11,6 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 (0, allUseRoutes_1.default)(app);
-console.log(1);
 app.listen(3001, () => {
     console.log("3001");
 });

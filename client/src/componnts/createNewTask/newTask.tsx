@@ -1,7 +1,7 @@
-import { Button, Card, Divider, TextField } from "@mui/material";
+import { Button, Card, Divider, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { Stack } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import axios from "axios";
 // import UnstyledInputBasic from "./s";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -27,7 +27,7 @@ const NewTask = ({ projectId, onEnterNewTask, onRefreshing }: IProps) => {
   const [startDate, setStartDate] = useState<Dayjs | null | string>(
     dayjs().format("DD/MM/YYYY")
   );
-  
+
   const [endDate, setEndDate] = useState<Dayjs | null | string>(
     dayjs().format("DD/MM/YYYY")
   );
@@ -48,24 +48,46 @@ const NewTask = ({ projectId, onEnterNewTask, onRefreshing }: IProps) => {
     onEnterNewTask(false);
   };
   return (
-    <form onSubmit={postNewTask}>
-      <Card classes sx={{ p: 2, mt: 5, background: "#b0b0b0a1" }}>
-        <Stack spacing={3}>
-          {/* <UnstyledInputBasic /> */}
-          <TextareaAutosize
-            required
-            aria-label="maximum height"
-            placeholder={"תיאור משימה..."}
-            style={{ width: 500, height: 150 }}
-            onChange={(e) => {
-              setTaskDescription(e.target.value);
-            }}
-          />
-          <Stack
-            direction="row"
-            spacing={2}
-            divider={<Divider orientation="vertical" />}
-          >
+    <Card
+      classes
+      sx={{
+        mt: 5,
+        p: 2,
+        background: "#b0b0b0a1",
+        width: {
+          xs: "80%", //0
+          sm: "80%", //600
+          md: "80%", //900
+          lg: "100%", //1200
+          xl: "100%", //1536
+        },
+      }}
+    >
+      <form onSubmit={postNewTask}>
+        {/* <UnstyledInputBasic /> */}
+        <TextareaAutosize
+          required
+          aria-label="maximum height"
+          placeholder={"תיאור משימה..."}
+          style={{
+            width: "100%",
+            height: 150,
+            background: "#b0b0b0a1",
+            borderRadius: "15px",
+            fontFamily: "Arial",
+          }}
+          onChange={(e) => {
+            setTaskDescription(e.target.value);
+          }}
+        />
+        <Grid
+          container
+          direction="column"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={1}
+        >
+          <Grid item>
             <LocalizationProvider
               dateAdapter={AdapterDayjs}
               adapterLocale={locale}
@@ -80,6 +102,8 @@ const NewTask = ({ projectId, onEnterNewTask, onRefreshing }: IProps) => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
+          </Grid>
+          <Grid item>
             <LocalizationProvider
               dateAdapter={AdapterDayjs}
               adapterLocale={locale}
@@ -94,17 +118,17 @@ const NewTask = ({ projectId, onEnterNewTask, onRefreshing }: IProps) => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-            <Button
-              type="submit"
-              variant="outlined"
-              sx={{ width: 150, boxShadow: 2, mt: 3 }}
-            >
-              {"שליחה >"}
-            </Button>
-          </Stack>
-        </Stack>
-      </Card>
-    </form>
+          </Grid>
+          <Button
+            type="submit"
+            variant="outlined"
+            sx={{ width: "80%", boxShadow: 2, mt: 3 }}
+          >
+            {"שליחה"}
+          </Button>
+        </Grid>
+      </form>
+    </Card>
   );
 };
 export default NewTask;

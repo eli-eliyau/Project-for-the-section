@@ -1,3 +1,5 @@
+/* eslint-disable no-mixed-operators */
+/* eslint-disable no-lone-blocks */
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 import SignIn from "../componnts/SignIn";
@@ -6,7 +8,8 @@ import ProjectPage from "../componnts/projectPage/ProjectPage";
 import Projects from "../componnts/projectsPage/Projects";
 import CreateNewProject from "../componnts/createNewProjectPage/createNewProject";
 import axios from "axios";
-import Api from "../componnts/Api";
+import img from "../imgs/images.png";
+
 interface IArr {
   _id: string;
   name: string;
@@ -23,7 +26,6 @@ const RoutesFront = () => {
     token: string;
     role: string;
   }>();
-
   useEffect(() => {
     //בקשה אימות לתוקן שקביל היוזר בכניסה למערכת לתוקן שנימצא בדאתא
     axios
@@ -32,20 +34,34 @@ const RoutesFront = () => {
       })
       .then((res) => {
         setUser(res.data);
+        {
+          res.data && localStorage.setItem("user", String("1"));
+        }
       })
       .catch((err) => {
         console.error(err);
       });
   }, [userToken]);
-
+  let userValid = localStorage.getItem("user");
+  console.log(user?.name);
+  // localStorage.removeItem("user")
   return (
     <Fragment>
-      {userToken && <HeaderBar onData={setProjectData} />}
-      <Routes>
-        <Route path="/" element={<Navigate replace to="/login" />} />
-        <Route path="/login" element={<SignIn onUserToken={setUserToken} />} />
-        {user?.token && (
-          <>
+      {/* {userValid && <HeaderBar onData={setProjectData} />} */}
+      {userValid === null ? (
+        <Routes>
+          <Route
+            path="/login"
+            element={<SignIn onUserToken={setUserToken} />}
+          />
+          <Route path="*" element={<Navigate replace to="/login" />} />
+        </Routes>
+      ) : (
+        <>
+          <HeaderBar onData={setProjectData} />
+          <Routes>
+            <Route path="*" element={<Navigate to="/projects" replace />} />
+
             <Route
               path="/projects"
               element={<Projects data={projectData} onId={setProjectId} />}
@@ -55,9 +71,9 @@ const RoutesFront = () => {
               element={<ProjectPage projectId={projectId} />}
             />
             <Route path="/create-new-project" element={<CreateNewProject />} />
-          </>
-        )}
-      </Routes>
+          </Routes>
+        </>
+      )}
     </Fragment>
   );
 };

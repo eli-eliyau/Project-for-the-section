@@ -1,4 +1,4 @@
-import { Button, Card, TextareaAutosize, TextField } from "@mui/material";
+import { Button, Card, Grid, TextareaAutosize, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { useState } from "react";
@@ -52,70 +52,84 @@ const CreateNewProject = () => {
             p: 2,
             mt: 10,
             background: "#b0b0b0a1",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
           }}
         >
-          {/* <Stack spacing={3}> */}
-          {a?.map((item) => {
-            console.log();
-
-            return (
-              <TextField
-                style={{ padding: 5 }}
-                label={item}
-                variant="outlined"
-                required
-                // value={}
-                // error={!a}
-                onChange={(e) => {
-                  {
-                    item === "שם" && setName(e.target.value);
-                  }
-                  {
-                    item === "סטטוס" && setStatus(e.target.value);
-                  }
-                  {
-                    item === "מצב" && setSituation(e.target.value);
-                  }
-                  {
-                    item === "משתמשים" && setUsers(e.target.value);
-                  }
-                  {
-                    item === "משתמש מוביל" && setTopUser(e.target.value);
-                  }
-                  {
-                    item === "צוות הפרויקט" && setProjectTeam(e.target.value);
-                  }
-                  {
-                    item === "לקוח הפרויקט" && setProjectClient(e.target.value);
-                  }
-                }}
-                size={"small"}
-                type="text"
-                // helperText={!a && "הכנס תיאור"}
-              />
-            );
-          })}
-          <br />
-          <TextareaAutosize
-            required
-            aria-label="maximum height"
-            placeholder={"תיאור הפרויקט..."}
-            style={{ width: 500, height: 150 }}
-            onChange={(e) => {
-              setProjectDescription(e.target.value);
-            }}
-          />
-          <br />
-          <Button
-            type="submit"
-            variant="outlined"
-            sx={{ width: 150, boxShadow: 2, mt: 3 }}
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="flex-start"
           >
-            {"שליחה >"}
-          </Button>
+            {/* <Stack spacing={3}> */}
+            {a?.map((item) => {
+              console.log();
+
+              return (
+                <TextField
+                  style={{ padding: 5 }}
+                  label={item}
+                  variant="outlined"
+                  required
+                  
+                  // value={}
+                  // error={!a}
+                  onChange={(e) => {
+                    {
+                      item === "שם" && setName(e.target.value);
+                    }
+                    {
+                      item === "סטטוס" && setStatus(e.target.value);
+                    }
+                    {
+                      item === "מצב" && setSituation(e.target.value);
+                    }
+                    {
+                      item === "משתמשים" && setUsers(e.target.value);
+                    }
+                    {
+                      item === "משתמש מוביל" && setTopUser(e.target.value);
+                    }
+                    {
+                      item === "צוות הפרויקט" && setProjectTeam(e.target.value);
+                    }
+                    {
+                      item === "לקוח הפרויקט" &&
+                        setProjectClient(e.target.value);
+                    }
+                  }}
+                  size={"small"}
+                  type="text"
+                  // helperText={!a && "הכנס תיאור"}
+                />
+              );
+            })}
+            <TextareaAutosize
+              required
+              aria-label="maximum height"
+              placeholder={"תיאור הפרויקט..."}
+              style={{ width: "90%", height: 150 ,background:"#b0b0b0a1", borderRadius: "15px",fontFamily: "Arial"}}
+              onChange={(e) => {
+                setProjectDescription(e.target.value);
+              }}
+            />
+            <Button
+              type="submit"
+              variant="outlined"
+              sx={{
+                width: {
+                  xs: "50%",
+                  sm: "50%",
+                  md: "50%", //900
+                  lg: "35%", //1200
+                  xl: "50%", //1536
+                },
+                boxShadow: 2,
+                mt: 3,
+              }}
+            >
+              {"שליחה"}
+            </Button>
+          </Grid>
         </Card>
       </form>
     </>

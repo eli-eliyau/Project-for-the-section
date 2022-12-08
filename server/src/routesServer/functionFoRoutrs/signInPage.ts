@@ -8,10 +8,9 @@ export const signInPage = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.body);
 
   try {
-    const user = await UsersSchema.findOne({ pass: req.body.pass });
+    const user = await  UsersSchema.findOne({ pass: req.body.pass });
     if (user?.pass === req.body.pass) {
       let newToken = genToken(user?._id);
       //מכניס את התוקן שנשלח ליוזר בכניסה למערכת גם לדאתא כדי לאמת בכל כניסה לדף בפרונט

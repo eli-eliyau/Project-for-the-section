@@ -18,7 +18,7 @@ interface IProps {
   projectId: string | undefined;
   onEnterEditProject: (enter: boolean) => void;
   dataProject: IData | undefined;
-  onRefreshingforProject:(ref:boolean)=>void
+  onRefreshingforProject: (ref: boolean) => void;
 }
 
 const a = [
@@ -88,19 +88,25 @@ const EditProjectPage = ({
         console.log(res.data);
       })
       .catch((err) => console.log(err));
-      onRefreshingforProject(true)
+    onRefreshingforProject(true);
     onEnterEditProject(false);
   };
 
   return (
     <>
       <form onSubmit={postNewProject}>
-        <Card sx={{ p: 2, mt: 10, background: "#b0b0b0a1",
- display: "flex",
- flexDirection: "column",
- alignItems: "center" }}>
+        <Card
+          sx={{
+            p: 2,
+            mt: 10,
+            background: "#b0b0b0a1",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <TextField
-          value={name}
+            value={name}
             style={{ padding: 5 }}
             label={"שם"}
             variant="outlined"
@@ -112,7 +118,7 @@ const EditProjectPage = ({
             type="text"
           />
           <TextField
-          value={status}
+            value={status}
             style={{ padding: 5 }}
             label={"סטטוס"}
             variant="outlined"
@@ -124,7 +130,7 @@ const EditProjectPage = ({
             type="text"
           />
           <TextField
-          value={situation}
+            value={situation}
             style={{ padding: 5 }}
             label={"מצב"}
             variant="outlined"
@@ -136,7 +142,7 @@ const EditProjectPage = ({
             type="text"
           />{" "}
           <TextField
-          value={users}
+            value={users}
             style={{ padding: 5 }}
             label={"משתמשים"}
             variant="outlined"
@@ -148,7 +154,7 @@ const EditProjectPage = ({
             type="text"
           />
           <TextField
-          value={topUser}
+            value={topUser}
             style={{ padding: 5 }}
             label={"משתמש מוביל"}
             variant="outlined"
@@ -160,7 +166,7 @@ const EditProjectPage = ({
             type="text"
           />
           <TextField
-          value={projectTeam}
+            value={projectTeam}
             style={{ padding: 5 }}
             label={"צוות הפרויקט"}
             variant="outlined"
@@ -172,7 +178,7 @@ const EditProjectPage = ({
             type="text"
           />
           <TextField
-          value={projectClient}
+            value={projectClient}
             style={{ padding: 5 }}
             label={"לקוח הפרויקט"}
             variant="outlined"
@@ -189,7 +195,13 @@ const EditProjectPage = ({
             value={projectDescription}
             aria-label="maximum height"
             placeholder={"תיאור הפרויקט..."}
-            style={{ width: 500, height: 150 }}
+            style={{
+              width: "100%",
+              height: 150,
+              background: "#b0b0b0a1",
+              borderRadius: "15px",
+              fontFamily: "Arial",
+            }}
             onChange={(e) => {
               setProjectDescription(e.target.value);
             }}
@@ -198,12 +210,12 @@ const EditProjectPage = ({
           <Button
             type="submit"
             variant="outlined"
-            sx={{ width: 150, boxShadow: 2, mt: 3 }}
+            sx={{ width: "80%", boxShadow: 2, mt: 3 }}
             // onClick={() => {
             //   console.log(DataNewProject);
             // }}
           >
-            {"שליחה >"}
+            {"שליחה"}
           </Button>
         </Card>
       </form>

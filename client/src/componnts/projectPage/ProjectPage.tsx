@@ -1,6 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { Divider, Toolbar, Typography } from "@mui/material";
+import { Divider, Grid, Toolbar, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import axios from "axios";
@@ -8,6 +8,15 @@ import Task from "./TaskFoProject";
 import NewTask from "../createNewTask/newTask";
 import EditProjectPage from "./EditProjectPage";
 import Api from "../Api";
+
+import { styled } from "@mui/material/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 interface IProps {
   projectId: string | undefined;
 }
@@ -67,117 +76,183 @@ const ProjectPage = ({ projectId }: IProps) => {
       })
       .catch((err) => console.log(err));
   }, [refreshingforTask]);
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
+
+  function createData(
+    name: string | undefined,
+    description: string | undefined
+  ) {
+    return { name, description };
+  }
+
+  const rows = [
+    createData(
+      "תיאור הפרויקט",
+      dataProject && `${dataProject.projectDescription}`
+    ),
+    createData("סטטוס", dataProject && `${dataProject.status}`),
+    createData("מצב", dataProject && `${dataProject.situation}`),
+    createData("משתמשים", dataProject && `${dataProject.users}`),
+    createData("משתמש מוביל", dataProject && `${dataProject.topUser}`),
+    createData("צוות הפרוייקט", dataProject && `${dataProject.projectTeam}`),
+    createData("לקוח הפרוייקט", dataProject && `${dataProject.projectClient}`),
+  ];
+
   return (
     <>
-      {/* <Box */}
-         {/* sx={{ display: "flex", flexDirection: "column", alignItems: "center" }} */}
-      {/* > */}
-        <Box
-          marginTop={10}
-          style={{ background: "#b0b0b0a1" }}
-          sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-        >
-          {dataProject && (
-            <>
-              <header>
-                <Typography
-                  sx={{ fontSize: 26 }}
-                  color="text.secondary"
-                  gutterBottom
-                >
-                  {`פרויקט ${dataProject.name}`}
-                </Typography>
-              </header>
-              <Typography>{`תיאור הפרוקייט:${dataProject.projectDescription}`}</Typography>
-              <Toolbar>
-                <Stack
-                  spacing={2}
-                  divider={<Divider orientation="vertical" />}
-                  direction="row"
-                >
-                  <Stack>
-                    <Typography>{`סטטוס:${dataProject.status} `}</Typography>
-                    <Typography>{`מצב:${dataProject.situation}`}</Typography>
-                  </Stack>
-                  <Stack></Stack>
-                  <Stack>
-                    <Typography>{`יש משתמשים:${dataProject.users}`}</Typography>
-                    <Typography>{`משתמש מוביל:${dataProject.topUser}`}</Typography>
-                  </Stack>
-                  <Stack>
-                    <Typography>{`צוות הפרוייקט:${dataProject.projectTeam}`}</Typography>
-                    <Typography>{`לקוח הפרוייקט:${dataProject.projectClient}`}</Typography>
-                  </Stack>
-                </Stack>
-              </Toolbar>
-            </>
-          )}
-        
-</Box>
-<Box
-  sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
->
-  
-        <Api task={task} />
-
-        <Typography sx={{ fontSize: 26 }} color="text.secondary" gutterBottom>
-          {"משימות:"}
-        </Typography>
-        <Stack spacing={3}>
-          <Stack
-            direction="row"
-            spacing={0.5}
-            divider={<Divider orientation="vertical" />}
+      {dataProject && (
+        <>
+          <Typography
+            sx={{ fontSize: 26 ,mt:8}}
+            align="center"
+            paragraph={true}
+            color={"#0066ff"}
           >
-            <Button
-              variant="outlined"
-              color="success"
-              sx={{ width: 150, boxShadow: 2 }}
-              onClick={() => {
-                setTaskStatus("פעיל");
-                setEnterEditProject(false);
-                setEnterNewTask(false);
-              }}
+            {`פרויקט ${dataProject.name}`}
+          </Typography>
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <TableContainer component={Paper}>
+              <Table
+                sx={{
+                  width: {
+                    xs: "100%", //0
+                    sm: "100%", //600
+                    md: "100%", //900
+                    lg: "100%", //1200
+                    xl: "100%", //1536
+                  },
+                }}
+                aria-label="customized table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="right">{"שם"}</StyledTableCell>
+                    <StyledTableCell align="right">{"תוכן"}</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <StyledTableRow key={row.name}>
+                      <StyledTableCell
+                        component="th"
+                        scope="row"
+                        align="right"
+                        sx={{
+                          width: {
+                            xs: "1%", //0
+                            sm: "50%", //600
+                            md: "50%", //900
+                            lg: "50%", //1200
+                            xl: "50%", //1536
+                          },
+                        }}
+                      >
+                        {row.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {row.description}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Api task={task} />
+            <Grid
+              container
+              spacing={0.5}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
             >
-              {"משימות פעילות"}
-            </Button>
-            <Button
-              color="error"
-              variant="outlined"
-              sx={{ width: 150, boxShadow: 2 }}
-              onClick={() => {
-                setTaskStatus("לא פעיל");
-                setEnterEditProject(false);
-                setEnterNewTask(false);
-              }}
-            >
-              {"משימות לא פעילות"}
-            </Button>
-            <Button
-              variant="outlined"
-              sx={{ width: 150, boxShadow: 2, mt: 3 }}
-              onClick={() => {
-                setEnterNewTask(true);
-                setEnterEditProject(false);
-                setTaskStatus("");
-              }}
-            >
-              {"משימה חדשה"}
-            </Button>
-            <Button
-              variant="outlined"
-              sx={{ width: 150, boxShadow: 2, mt: 3 }}
-              onClick={() => {
-                setEnterEditProject(true);
-                setEnterNewTask(false);
-                setTaskStatus("");
-              }}
-            >
-              {"עריכת פרויקט"}
-            </Button>
-          </Stack>
-        </Stack>
-
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  color="success"
+                  sx={{ width: 150, boxShadow: 2 }}
+                  onClick={() => {
+                    setTaskStatus("פעיל");
+                    setEnterEditProject(false);
+                    setEnterNewTask(false);
+                  }}
+                >
+                  {"משימות פעילות"}
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  color="error"
+                  variant="outlined"
+                  sx={{ width: 150, boxShadow: 2 }}
+                  onClick={() => {
+                    setTaskStatus("לא פעיל");
+                    setEnterEditProject(false);
+                    setEnterNewTask(false);
+                  }}
+                >
+                  {"משימות לא פעילות"}
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  sx={{ width: 150, boxShadow: 2 }}
+                  onClick={() => {
+                    setEnterNewTask(true);
+                    setEnterEditProject(false);
+                    setTaskStatus("");
+                  }}
+                >
+                  {"משימה חדשה"}
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  sx={{ width: 150, boxShadow: 2 }}
+                  onClick={() => {
+                    setEnterEditProject(true);
+                    setEnterNewTask(false);
+                    setTaskStatus("");
+                  }}
+                >
+                  {"עריכת פרויקט"}
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </>
+      )}
+      <Grid
+        container
+        // spacing={0.5}
+         direction="column"
+         justifyContent="space-between"
+         alignItems="center"
+      >
         {task?.map((item, key) => {
           return (
             item.taskStatus === taskStatus && (
@@ -207,8 +282,7 @@ const ProjectPage = ({ projectId }: IProps) => {
             />
           </>
         )}
-        </Box>
-      
+      </Grid>
     </>
   );
 };

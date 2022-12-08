@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   Divider,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -15,7 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/en";
 import { DatePicker } from "@mui/x-date-pickers";
 import axios from "axios";
-import {  useState } from "react";
+import { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 interface ITask {
@@ -46,11 +47,11 @@ const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
     taskData.startDate
   );
   console.log(startDate);
-  
+
   const [endDate, setEndDate] = useState<Dayjs | null | string>(
     dayjs(taskData.endDate)
   );
-console.log(endDate);
+  console.log(endDate);
 
   const handleChange = (event: SelectChangeEvent) => {
     setTaskStatus(event.target.value as string);
@@ -79,68 +80,84 @@ console.log(endDate);
       {enter && (
         <>
           <form onSubmit={putEditTask}>
-            <Card classes sx={{ p: 2, mt: 5, background: "#b0b0b0a1" }}>
-              <Stack spacing={3}>
-                {/* <UnstyledInputBasic /> */}
-                <TextareaAutosize
-                  required
-                  value={taskDescription}
-                  aria-label="maximum height"
-                  placeholder={"תיאור משימה..."}
-                  style={{ width: 500, height: 150 }}
-                  onChange={(e) => {
-                    setTaskDescription(e.target.value);
-                  }}
-                />
-                <Stack
-                  direction="row"
-                  spacing={2}
-                  divider={<Divider orientation="vertical" />}
+            <Card classes sx={{ p: 1, background: "#b0b0b0a1" }}>
+              {/* <UnstyledInputBasic /> */}
+              <TextareaAutosize
+                required
+                value={taskDescription}
+                aria-label="maximum height"
+                placeholder={"תיאור משימה..."}
+                style={{ width: "100%", height: 150 ,background:"#b0b0b0a1", borderRadius: "15px",fontFamily: "Arial"}}
+
+                onChange={(e) => {
+                  setTaskDescription(e.target.value);
+                }}
+              />
+              <Grid
+                container
+              direction="column"
+                justifyContent="space-between"
+                alignItems="center"
+                spacing={1}
+              >
+                 <Grid item >
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale={locale}
                 >
-                  <LocalizationProvider
-                    dateAdapter={AdapterDayjs}
-                    adapterLocale={locale}
-                  >
-                    <DatePicker
-                      label={"תאריך התחלה"}
-                      value={startDate}
-                      onChange={(newValue) => setStartDate(dayjs(newValue).format('DD/MM/YYYY'))}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </LocalizationProvider>
-                  <LocalizationProvider
-                    dateAdapter={AdapterDayjs}
-                    adapterLocale={locale}
-                  >
-                    <DatePicker
-                      label={"תאירך סיום"}
-                      value={endDate}
-                      onChange={(newValue) => setEndDate(dayjs(newValue).format('DD/MM/YYYY'))}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </LocalizationProvider>
-                  <Select
-                    required
-                    label="סטטוס משימה"
-                    value={taskStatus}
-                    style={{ width: 100 }}
-                    size={"small"}
-                    // labelId="demo-simple-select-label"
-                    //   id="demo-simple-select"
-                    onChange={handleChange}
-                  >
-                    <MenuItem value={"פעיל"}>{"פעיל"}</MenuItem>
-                    <MenuItem value={"לא פעיל"}>{"לא פעיל"}</MenuItem>
-                  </Select>
-                </Stack>
-              </Stack>
+                  <DatePicker
+                    label={"תאריך התחלה"}
+                    value={startDate}
+                    onChange={(newValue) =>
+                      setStartDate(dayjs(newValue).format("DD/MM/YYYY"))
+                    }
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+                </Grid>
+                <Grid item >
+
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale={locale}
+                >
+                  <DatePicker
+                    label={"תאירך סיום"}
+                    value={endDate}
+                    onChange={(newValue) =>
+                      setEndDate(dayjs(newValue).format("DD/MM/YYYY"))
+                    }
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+                </Grid>
+                <Grid item >
+
+                <Select
+                  required
+                  label="סטטוס משימה"
+                  value={taskStatus}
+                  style={{ width: 100 }}
+                  size={"small"}
+                  // labelId="demo-simple-select-label"
+                  //   id="demo-simple-select"
+                  onChange={handleChange}
+                >
+                  <MenuItem value={"פעיל"}>{"פעיל"}</MenuItem>
+                  <MenuItem value={"לא פעיל"}>{"לא פעיל"}</MenuItem>
+                </Select>
+                </Grid>
+
               <Button
                 type="submit"
                 variant="outlined"
-                sx={{ width: 150, boxShadow: 2, mt: 3 }}
+                sx={{  width:"80%",boxShadow: 2, mt:1}}
+                fullWidth
               >
-                {"שליחה >"}
+                {"שליחה"}
               </Button>
+              </Grid>
+
             </Card>
           </form>
         </>

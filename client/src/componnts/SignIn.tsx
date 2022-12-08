@@ -14,32 +14,31 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import createCache from "@emotion/cache";
+import rtlPlugin from "stylis-plugin-rtl";
+import { CacheProvider } from "@emotion/react";
+import { prefixer } from "stylis";
 
 interface IProps {
   onUserToken: (token: string|undefined) => void;
 }
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+// import { createTheme } from "@material-ui/core";
 
-const theme = createTheme();
+
+
+export const theme = createTheme({
+  direction: "ltr",
+});
+
+export const cacheRtl = createCache({
+  key: "muirtl",
+  stylisPlugins: [prefixer, rtlPlugin],
+});
+
+     
+
 export default function SignIn({ onUserToken }: IProps) {
-  const navigte = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -49,8 +48,6 @@ export default function SignIn({ onUserToken }: IProps) {
       .post("http://localhost:3001/signInPage", { pass: data.get("password") })
       .then((res) => {
         console.log(res.data.token);
-        // setTo(res.data.token)
-        // console.log(to);
         axios
           .get("http://localhost:3001/authenticationToken", {
             headers: {
@@ -59,7 +56,7 @@ export default function SignIn({ onUserToken }: IProps) {
           })
           .then((res) => {
             onUserToken(res.data.token);
-            navigte("/projects");
+            // navigte("/projects");
           })
           .catch((err) => console.log(err));
       })
@@ -67,18 +64,15 @@ export default function SignIn({ onUserToken }: IProps) {
         console.log(err);
       });
 
-    // console.log({
-    // email: data.get('email'),
-    // password: data.get('password'),
-    // });
-    console.log(data);
   };
 
   return (
+    <CacheProvider value={cacheRtl}>
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <Box
+        
           sx={{
             marginTop: 8,
             display: "flex",
@@ -87,7 +81,6 @@ export default function SignIn({ onUserToken }: IProps) {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            {/* <LockOutlinedIcon /> */}
           </Avatar>
           <Typography component="h1" variant="h5">
             {"ברוך הבא למערכת"}
@@ -118,10 +111,6 @@ export default function SignIn({ onUserToken }: IProps) {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
@@ -130,22 +119,10 @@ export default function SignIn({ onUserToken }: IProps) {
             >
               {"התחברות"}
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+    </CacheProvider>
   );
 }

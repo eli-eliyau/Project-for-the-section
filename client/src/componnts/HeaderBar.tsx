@@ -1,13 +1,13 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Api from "./Api";
-import { Stack } from "@mui/system";
+import { Grid, Toolbar } from "@mui/material";
+import img from "../imgs/images.png";
+
 interface IProps {
   onData: (id: IArr[] | undefined) => void;
 }
@@ -39,43 +39,39 @@ const HeaderBar = ({ onData }: IProps) => {
 
   return (
     <>
-      <Box>
-        <AppBar component="nav">
-          <Toolbar>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
-              {"מדור מערכות מידע"}
-            </Typography>
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              <Button
-                sx={{ color: "#fff" }}
-                onClick={() => {
-                  setGetProjectData(true);
-                  navigte("/projects");
-                }}
-              >
-                {/* {item} */}
-                {"פרויקטים"}
-              </Button>
-              <Button
-                // key={item}
-                sx={{ color: "#fff" }}
-                onClick={() => {
-                  navigte("/create-new-project");
-                }}
-              >
-                {/* {item} */}
-                {"יצירת פרויקט"}
-              </Button>
+      <AppBar component="nav" sx={{ height: 50, background: "#0066ff" }}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <Typography variant="h5" component="div" sx={{ m: 1 }}>
+            {"ניהול פרויקטים"}
+          </Typography>
 
-              {/* ))} */}
-            </Box>
-          </Toolbar>
-        </AppBar>
-      </Box>
+          <Box>
+            <Button
+              sx={{ color: "#fff", m: 0.5 }}
+              onClick={() => {
+                setGetProjectData(true);
+                navigte("/projects");
+              }}
+            >
+              {"פרויקטים"}
+            </Button>
+            <Button
+              // key={item}
+              sx={{ color: "#fff", m: 0.5 }}
+              onClick={() => {
+                navigte("/create-new-project");
+              }}
+            >
+              {"יצירת פרויקט"}
+            </Button>
+          </Box>
+        </Grid>
+      </AppBar>
     </>
   );
 };
