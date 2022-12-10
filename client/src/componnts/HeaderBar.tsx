@@ -7,9 +7,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid, Toolbar } from "@mui/material";
 import img from "../imgs/images.png";
+import { setRef } from "@mui/material/utils";
 
 interface IProps {
   onData: (id: IArr[] | undefined) => void;
+  user:{ name: string,
+    token: string,
+    role: string,}|undefined
 }
 interface IArr {
   _id: string;
@@ -18,11 +22,11 @@ interface IArr {
   situation: string;
 }
 
-const HeaderBar = ({ onData }: IProps) => {
+const HeaderBar = ({ onData ,user}: IProps) => {
   const [projects, setProjects] = useState<IArr[]>();
   const [getProjectData, setGetProjectData] = useState<Boolean>(false);
-
-  const navigte = useNavigate();
+  const [r, setR] = useState(true);
+  const navigate = useNavigate();
   useEffect(() => {
     //מביא את הפרויקטים לדף הבית
     axios
@@ -39,7 +43,15 @@ const HeaderBar = ({ onData }: IProps) => {
 
   return (
     <>
-      <AppBar component="nav" sx={{ height: 50, background: "#0066ff" }}>
+      <AppBar
+        component="nav"
+        sx={{
+          height: {
+            xs: 50,
+          },
+          background: "#0066ff",
+        }}
+      >
         <Grid
           container
           direction="row"
@@ -52,22 +64,34 @@ const HeaderBar = ({ onData }: IProps) => {
 
           <Box>
             <Button
-              sx={{ color: "#fff", m: 0.5 }}
+              sx={{ color: "#fff", mt: 0.5 }}
               onClick={() => {
                 setGetProjectData(true);
-                navigte("/projects");
+                navigate("/projects");
               }}
             >
               {"פרויקטים"}
             </Button>
             <Button
               // key={item}
-              sx={{ color: "#fff", m: 0.5 }}
+              sx={{ color: "#fff", mt: 0.5 }}
               onClick={() => {
-                navigte("/create-new-project");
+                navigate("/create-new-project");
               }}
             >
               {"יצירת פרויקט"}
+            </Button>
+            <Button
+              // key={item}
+              sx={{ color: "#fff", mt: 0.5 }}
+              onClick={() => {
+                localStorage.removeItem("user");
+                axios.post("http://localhost:3001/logged-off",{name:user?.name}).catch((err)=>console.log(err)
+                )
+                navigate(0);
+              }}
+            >
+              {"התנתק"}
             </Button>
           </Box>
         </Grid>

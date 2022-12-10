@@ -2,6 +2,7 @@ import { Router } from "express";
 import { fo, signInPage, authenticationToken } from "./functionFoRoutrs/signInPage";
 
 const router = Router();
+
 //הפונקציה מאמתת את הסיסמא של היוזר בדאתא ואז מקבלת תוקן עבור היוזר ומחזירה אותו לפרונט
 router.post("/signInPage",signInPage);
 

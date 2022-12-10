@@ -9,6 +9,7 @@ import Projects from "../componnts/projectsPage/Projects";
 import CreateNewProject from "../componnts/createNewProjectPage/createNewProject";
 import axios from "axios";
 import img from "../imgs/images.png";
+import SignUp from "../componnts/sign_up/SignUp";
 
 interface IArr {
   _id: string;
@@ -44,7 +45,6 @@ const RoutesFront = () => {
   }, [userToken]);
   let userValid = localStorage.getItem("user");
   console.log(user?.name);
-  // localStorage.removeItem("user")
   return (
     <Fragment>
       {/* {userValid && <HeaderBar onData={setProjectData} />} */}
@@ -54,14 +54,17 @@ const RoutesFront = () => {
             path="/login"
             element={<SignIn onUserToken={setUserToken} />}
           />
+          <Route
+            path="/sing-up"
+            element={<SignUp onUserToken={setUserToken} />}
+          />
           <Route path="*" element={<Navigate replace to="/login" />} />
         </Routes>
       ) : (
         <>
-          <HeaderBar onData={setProjectData} />
+          <HeaderBar onData={setProjectData} user={user}/>
           <Routes>
             <Route path="*" element={<Navigate to="/projects" replace />} />
-
             <Route
               path="/projects"
               element={<Projects data={projectData} onId={setProjectId} />}

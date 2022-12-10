@@ -4,6 +4,8 @@ import { Box, Button, Grid, Toolbar, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Container } from "@mui/system";
 import { url } from "inspector";
+import AppBar from "@mui/material/AppBar";
+
 interface IDtat {
   data: IProps[] | undefined;
   onId: (id: string) => void;
@@ -55,6 +57,10 @@ const Projects = ({ data, onId }: IDtat) => {
             );
           })}
         </Grid>
+      
+      
+      
+
       </>
     </div>
   );
