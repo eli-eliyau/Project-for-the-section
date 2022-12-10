@@ -10,6 +10,7 @@ import CreateNewProject from "../componnts/createNewProjectPage/createNewProject
 import axios from "axios";
 import img from "../imgs/images.png";
 import SignUp from "../componnts/sign_up/SignUp";
+import P from "../componnts/projectsPage/P";
 
 interface IArr {
   _id: string;
@@ -67,7 +68,8 @@ const RoutesFront = () => {
             <Route path="*" element={<Navigate to="/projects" replace />} />
             <Route
               path="/projects"
-              element={<Projects data={projectData} onId={setProjectId} />}
+              // element={<Projects data={projectData} onId={setProjectId} />}
+              element={<P data={projectData} userName={user?.name} onId={setProjectId}/>}
             />
             <Route
               path="/project"

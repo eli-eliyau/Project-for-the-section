@@ -4,6 +4,7 @@ import {
   Divider,
   Grid,
   InputLabel,
+  ListItem,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -19,6 +20,9 @@ import axios from "axios";
 import { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { CacheProvider } from "@emotion/react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { cacheRtl, theme } from "../SignIn";
 interface ITask {
   _id: string;
   projectId: string;
@@ -51,7 +55,6 @@ const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
   const [endDate, setEndDate] = useState<Dayjs | null | string>(
     dayjs(taskData.endDate)
   );
-  console.log(endDate);
 
   const handleChange = (event: SelectChangeEvent) => {
     setTaskStatus(event.target.value as string);
@@ -77,91 +80,104 @@ const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
 
   return (
     <>
-      {enter && (
-        <>
-          <form onSubmit={putEditTask}>
-            <Card classes sx={{ p: 1, background: "#b0b0b0a1" }}>
-              {/* <UnstyledInputBasic /> */}
-              <TextareaAutosize
-                required
-                value={taskDescription}
-                aria-label="maximum height"
-                placeholder={"תיאור משימה..."}
-                style={{ width: "100%", height: 150 ,background:"#b0b0b0a1", borderRadius: "15px",fontFamily: "Arial"}}
-
-                onChange={(e) => {
-                  setTaskDescription(e.target.value);
-                }}
-              />
-              <Grid
-                container
-              direction="column"
-                justifyContent="space-between"
-                alignItems="center"
-                spacing={1}
-              >
-                 <Grid item >
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  adapterLocale={locale}
-                >
-                  <DatePicker
-                    label={"תאריך התחלה"}
-                    value={startDate}
-                    onChange={(newValue) =>
-                      setStartDate(dayjs(newValue).format("DD/MM/YYYY"))
-                    }
-                    renderInput={(params) => <TextField {...params} />}
+      <CacheProvider value={cacheRtl}>
+        <ThemeProvider theme={theme}>
+          {enter && (
+            <>
+              <form onSubmit={putEditTask}>
+                <Card sx={{ p: 1, background: "#b0b0b0a1" }}>
+                  {/* <UnstyledInputBasic /> */}
+                  <TextareaAutosize
+                    required
+                    value={taskDescription}
+                    aria-label="maximum height"
+                    placeholder={"תיאור משימה..."}
+                    style={{
+                      width: "100%",
+                      height: 150,
+                      background: "#ffffff",
+                      borderRadius: "15px",
+                      fontFamily: "Arial",
+                    }}
+                    onChange={(e) => {
+                      setTaskDescription(e.target.value);
+                    }}
                   />
-                </LocalizationProvider>
-                </Grid>
-                <Grid item >
+                  <Grid
+                    container
+                    direction="row"
+                     justifyContent="flex-start"
+                     alignItems="center"
+                    spacing={1}
+                  >
+                    <Grid item sx={{ mt: 2 }}>
+                      <LocalizationProvider
+                        dateAdapter={AdapterDayjs}
+                        adapterLocale={locale}
+                      >
+                        <DatePicker
+                          label={"תאריך התחלה"}
+                          value={startDate}
+                          onChange={(newValue) =>
+                            setStartDate(dayjs(newValue).format("DD/MM/YYYY"))
+                          }
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                      </LocalizationProvider>
+                    </Grid>
+                    <Grid item sx={{ mt: 2 }}>
+                      <LocalizationProvider
+                        dateAdapter={AdapterDayjs}
+                        adapterLocale={locale}
+                      >
+                        <DatePicker
+                          label={"תאירך סיום"}
+                          value={endDate}
+                          onChange={(newValue) =>
+                            setEndDate(dayjs(newValue).format("DD/MM/YYYY"))
+                          }
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                      </LocalizationProvider>
+                    </Grid>
+                    <Grid item>
+                      <Select
+                        required
+                        label={"סטטוס משימה"}
+                        value={taskStatus}
+                        style={{ width: 100 }}
+                        size={"small"}
+                        // labelId="demo-simple-select-label"
+                        //   id="demo-simple-select"
+                        onChange={handleChange}
+                      >
+                        <ListItem  
+                        // label={"סטטוס משימה"}
+                        value={"פעיל"}>{"פעיל"}</ListItem>
+                        <MenuItem value={"לא פעיל"}>{"לא פעיל"}</MenuItem>
+                      </Select>
+                    </Grid>
+                    <Grid container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center">
 
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  adapterLocale={locale}
-                >
-                  <DatePicker
-                    label={"תאירך סיום"}
-                    value={endDate}
-                    onChange={(newValue) =>
-                      setEndDate(dayjs(newValue).format("DD/MM/YYYY"))
-                    }
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </LocalizationProvider>
-                </Grid>
-                <Grid item >
-
-                <Select
-                  required
-                  label="סטטוס משימה"
-                  value={taskStatus}
-                  style={{ width: 100 }}
-                  size={"small"}
-                  // labelId="demo-simple-select-label"
-                  //   id="demo-simple-select"
-                  onChange={handleChange}
-                >
-                  <MenuItem value={"פעיל"}>{"פעיל"}</MenuItem>
-                  <MenuItem value={"לא פעיל"}>{"לא פעיל"}</MenuItem>
-                </Select>
-                </Grid>
-
-              <Button
-                type="submit"
-                variant="outlined"
-                sx={{  width:"80%",boxShadow: 2, mt:1}}
-                fullWidth
-              >
-                {"שליחה"}
-              </Button>
-              </Grid>
-
-            </Card>
-          </form>
-        </>
-      )}
+                    <Button
+                      type="submit"
+                      variant="outlined"
+                      sx={{ width: "80%", boxShadow: 2, mt: 1 }}
+                      fullWidth
+                    >
+                      {"שליחה"}
+                    </Button>
+                    </Grid>
+                  </Grid>
+                </Card>
+              </form>
+            </>
+          )}
+        </ThemeProvider>
+      </CacheProvider>
     </>
   );
 };
