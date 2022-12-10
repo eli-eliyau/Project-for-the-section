@@ -54,7 +54,7 @@ const P = ({ data ,userName,onId}: IProps) => {
           >
             <Card>
               <CardHeader
-                title={<Typography variant="h3" align="center">{`${tier.name}`}</Typography>}
+                title={<Typography variant="h3" align="center"><StarIcon />{`${tier.name}`}</Typography>}
                 // subheader={tier.name}
                 titleTypographyProps={{ align: "center" }}
                 //   action={tier.title === "Pro" ? <StarIcon /> : null}
