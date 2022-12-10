@@ -1,15 +1,19 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Api from "./Api";
-import { Stack } from "@mui/system";
+import { Grid, Toolbar } from "@mui/material";
+import img from "../imgs/images.png";
+import { setRef } from "@mui/material/utils";
+
 interface IProps {
   onData: (id: IArr[] | undefined) => void;
+  user:{ name: string,
+    token: string,
+    role: string,}|undefined
 }
 interface IArr {
   _id: string;
@@ -18,11 +22,11 @@ interface IArr {
   situation: string;
 }
 
-const HeaderBar = ({ onData }: IProps) => {
+const HeaderBar = ({ onData ,user}: IProps) => {
   const [projects, setProjects] = useState<IArr[]>();
   const [getProjectData, setGetProjectData] = useState<Boolean>(false);
-
-  const navigte = useNavigate();
+  const [r, setR] = useState(true);
+  const navigate = useNavigate();
   useEffect(() => {
     //מביא את הפרויקטים לדף הבית
     axios
@@ -39,43 +43,59 @@ const HeaderBar = ({ onData }: IProps) => {
 
   return (
     <>
-      <Box>
-        <AppBar component="nav">
-          <Toolbar>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
-              {"מדור מערכות מידע"}
-            </Typography>
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              <Button
-                sx={{ color: "#fff" }}
-                onClick={() => {
-                  setGetProjectData(true);
-                  navigte("/projects");
-                }}
-              >
-                {/* {item} */}
-                {"פרויקטים"}
-              </Button>
-              <Button
-                // key={item}
-                sx={{ color: "#fff" }}
-                onClick={() => {
-                  navigte("/create-new-project");
-                }}
-              >
-                {/* {item} */}
-                {"יצירת פרויקט"}
-              </Button>
+      <AppBar
+        component="nav"
+        sx={{
+          height: {
+            xs: 50,
+          },
+          background: "#0066ff",
+        }}
+      >
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <Typography variant="h5" component="div" sx={{ m: 1 }}>
+            {"ניהול פרויקטים"}
+          </Typography>
 
-              {/* ))} */}
-            </Box>
-          </Toolbar>
-        </AppBar>
-      </Box>
+          <Box>
+            <Button
+              sx={{ color: "#fff", mt: 0.5 }}
+              onClick={() => {
+                setGetProjectData(true);
+                navigate("/projects");
+              }}
+            >
+              {"פרויקטים"}
+            </Button>
+            <Button
+              // key={item}
+              sx={{ color: "#fff", mt: 0.5 }}
+              onClick={() => {
+                navigate("/create-new-project");
+              }}
+            >
+              {"יצירת פרויקט"}
+            </Button>
+            <Button
+              // key={item}
+              sx={{ color: "#fff", mt: 0.5 }}
+              onClick={() => {
+                localStorage.removeItem("user");
+                axios.post("http://localhost:3001/logged-off",{name:user?.name}).catch((err)=>console.log(err)
+                )
+                navigate(0);
+              }}
+            >
+              {"התנתק"}
+            </Button>
+          </Box>
+        </Grid>
+      </AppBar>
     </>
   );
 };

@@ -1,7 +1,11 @@
 import * as React from "react";
 import Paper from "@mui/material/Paper";
-import { Box, Button, Toolbar, Typography } from "@mui/material";
+import { Box, Button, Grid, Toolbar, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { Container } from "@mui/system";
+import { url } from "inspector";
+import AppBar from "@mui/material/AppBar";
+
 interface IDtat {
   data: IProps[] | undefined;
   onId: (id: string) => void;
@@ -16,24 +20,20 @@ interface IProps {
 const Projects = ({ data, onId }: IDtat) => {
   const navigte = useNavigate();
   return (
-    <>
-      <Box
-        style={{ background: "#e6e6e6" }}
-        sx={{
-          absolute: "flex",
-          mt: 10,
-          display: "flex",
-          flexWrap: "wrap",
-          "& > :not(style)": {
-            width: 150,
-            height: 181,
-          },
-        }}
-      >
-        {data?.map((item) => {
-          return (
-            <Toolbar>
+    <div style={{background:"#b0b0b0a1"}}>
+      <>
+        <Typography variant="h4" align="center" sx={{mt:8}} style={{  fontWeight: "bold"}}>{`הפרויקטים שלך`}</Typography>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="flex-start"
+          sx={{ mt: 8 }}
+        >
+          {data?.map((item) => {
+            return (
               <Button
+                // style={{ marginRight: 10 }}
                 onClick={() => {
                   onId(item._id);
 
@@ -41,26 +41,28 @@ const Projects = ({ data, onId }: IDtat) => {
                 }}
               >
                 <Paper elevation={10}>
-                  <Toolbar>
-                    <Typography
-                      variant="h6"
-                      component="div"
-                      sx={{ flexGrow: 1, display: { xs: "none", sm: "block" },width:100,height:150 }}
-                    >
-                      {`שם:${item.name}`}
-                      <br />
-                      {`סטטוס:${item.status}`}
-                      <br />
-                      {`מצב:${item.situation}`}
-                    </Typography>
-                  </Toolbar>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ width: 150, height: 150 }}
+                  >
+                    <Typography variant="h4">{`${item.name}`}</Typography>
+
+                    {`סטטוס:${item.status}`}
+                    <br />
+                    {`מצב:${item.situation}`}
+                  </Typography>
                 </Paper>
               </Button>
-            </Toolbar>
-          );
-        })}
-      </Box>
-    </>
+            );
+          })}
+        </Grid>
+      
+      
+      
+
+      </>
+    </div>
   );
 };
 export default Projects;

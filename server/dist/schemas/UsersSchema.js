@@ -39,7 +39,7 @@ const userSchema = new mongoose_1.Schema({
         default: Date.now(),
     },
     token: { type: String },
-    role: { type: String },
+    role: { type: String, default: "user" },
 });
 const UsersSchema = mongoose_1.default.model("users", userSchema);
 const genToken = (userId) => {

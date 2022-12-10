@@ -25,7 +25,7 @@ const userSchema: Schema = new Schema<IUser>({
     default: Date.now(),
   },
   token: { type: String },
-  role: { type: String },
+  role: { type: String ,default:"user"},
 });
 
 const UsersSchema = mongoose.model<IUser>("users", userSchema);

@@ -40,7 +40,6 @@ const UsersSchema_1 = __importStar(require("../../schemas/UsersSchema"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 //הפונקציה מאמתת את הסיסמא של היוזר ויוצרת תוקן ע"י פונקציה
 const signInPage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
     try {
         const user = yield UsersSchema_1.default.findOne({ pass: req.body.pass });
         if ((user === null || user === void 0 ? void 0 : user.pass) === req.body.pass) {
