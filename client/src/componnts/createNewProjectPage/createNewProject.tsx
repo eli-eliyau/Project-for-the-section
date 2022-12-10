@@ -107,7 +107,7 @@ const CreateNewProject = () => {
               required
               aria-label="maximum height"
               placeholder={"תיאור הפרויקט..."}
-              style={{ width: "90%", height: 150 ,background:"#b0b0b0a1", borderRadius: "15px",fontFamily: "Arial"}}
+              style={{ width: "90%", height: 150 ,background:"#ffffff", borderRadius: "15px",fontFamily: "Arial"}}
               onChange={(e) => {
                 setProjectDescription(e.target.value);
               }}
