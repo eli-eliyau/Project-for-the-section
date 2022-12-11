@@ -1,14 +1,15 @@
 import { Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
+import { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 
 interface ITask {
   _id: string;
   projectId: string;
   taskDescription: string;
-  startDate: string;
-  endDate: string;
+  startDate: Dayjs;
+  endDate: Dayjs;
   taskTag: string;
   taskStatus: string;
 }

@@ -23,12 +23,15 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { cacheRtl, theme } from "../SignIn";
+import "dayjs/locale/he";
+import { useNavigate } from "react-router-dom";
+
 interface ITask {
   _id: string;
   projectId: string;
   taskDescription: string;
-  startDate: string;
-  endDate: string;
+  startDate: Dayjs;
+  endDate: Dayjs;
   taskTag: string;
   taskStatus: string;
 }
@@ -38,6 +41,8 @@ interface IProps {
 }
 
 const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
+  const n = useNavigate();
+
   const [taskDescription, setTaskDescription] = useState<string>(
     taskData.taskDescription
   );
@@ -45,16 +50,11 @@ const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
   const [enter, setEnter] = useState<boolean>(true);
 
   //קשור לתאריך מאיזה פורמט יהיה
-  const locales = ["en"] as const;
-  const [locale, setLocale] = useState<typeof locales[number]>("en");
-  const [startDate, setStartDate] = useState<Date | null | string>(
-    taskData.startDate
-  );
-  console.log(startDate);
+  const locales = "he";
+  const [startDate, setStartDate] = useState<Dayjs | null>(taskData.startDate);
 
-  const [endDate, setEndDate] = useState<Dayjs | null | string>(
-    dayjs(taskData.endDate)
-  );
+  const [endDate, setEndDate] = useState<Dayjs | null>(taskData.endDate);
+  // dayjs().format('DD/MM/YYYY')
 
   const handleChange = (event: SelectChangeEvent) => {
     setTaskStatus(event.target.value as string);
@@ -74,9 +74,9 @@ const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
       .then((res) => {})
       .catch((err) => console.log(err));
     setEnter(false);
+
     onRefreshing(true);
   };
-  // dayjs.extend(relativeTime)
 
   return (
     <>
@@ -86,7 +86,6 @@ const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
             <>
               <form onSubmit={putEditTask}>
                 <Card sx={{ p: 1, background: "#b0b0b0a1" }}>
-                  {/* <UnstyledInputBasic /> */}
                   <TextareaAutosize
                     required
                     value={taskDescription}
@@ -106,21 +105,21 @@ const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
                   <Grid
                     container
                     direction="row"
-                     justifyContent="flex-start"
-                     alignItems="center"
+                    justifyContent="flex-start"
+                    alignItems="center"
                     spacing={1}
                   >
                     <Grid item sx={{ mt: 2 }}>
                       <LocalizationProvider
                         dateAdapter={AdapterDayjs}
-                        adapterLocale={locale}
+                        adapterLocale={locales}
                       >
                         <DatePicker
                           label={"תאריך התחלה"}
                           value={startDate}
-                          onChange={(newValue) =>
-                            setStartDate(dayjs(newValue).format("DD/MM/YYYY"))
-                          }
+                          onChange={(newValue) => {
+                            setStartDate(newValue);
+                          }}
                           renderInput={(params) => <TextField {...params} />}
                         />
                       </LocalizationProvider>
@@ -128,14 +127,12 @@ const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
                     <Grid item sx={{ mt: 2 }}>
                       <LocalizationProvider
                         dateAdapter={AdapterDayjs}
-                        adapterLocale={locale}
+                        adapterLocale={locales}
                       >
                         <DatePicker
                           label={"תאירך סיום"}
                           value={endDate}
-                          onChange={(newValue) =>
-                            setEndDate(dayjs(newValue).format("DD/MM/YYYY"))
-                          }
+                          onChange={(newValue) => setEndDate(newValue)}
                           renderInput={(params) => <TextField {...params} />}
                         />
                       </LocalizationProvider>
@@ -151,25 +148,29 @@ const EditTaskPage = ({ taskData, onRefreshing }: IProps) => {
                         //   id="demo-simple-select"
                         onChange={handleChange}
                       >
-                        <ListItem  
-                        // label={"סטטוס משימה"}
-                        value={"פעיל"}>{"פעיל"}</ListItem>
+                        <ListItem
+                          // label={"סטטוס משימה"}
+                          value={"פעיל"}
+                        >
+                          {"פעיל"}
+                        </ListItem>
                         <MenuItem value={"לא פעיל"}>{"לא פעיל"}</MenuItem>
                       </Select>
                     </Grid>
-                    <Grid container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center">
-
-                    <Button
-                      type="submit"
-                      variant="outlined"
-                      sx={{ width: "80%", boxShadow: 2, mt: 1 }}
-                      fullWidth
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
                     >
-                      {"שליחה"}
-                    </Button>
+                      <Button
+                        type="submit"
+                        variant="outlined"
+                        sx={{ width: "80%", boxShadow: 2, mt: 1 }}
+                        fullWidth
+                      >
+                        {"שליחה"}
+                      </Button>
                     </Grid>
                   </Grid>
                 </Card>
