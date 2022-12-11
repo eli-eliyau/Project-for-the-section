@@ -20,9 +20,14 @@ interface IProps {
 const Projects = ({ data, onId }: IDtat) => {
   const navigte = useNavigate();
   return (
-    <div style={{background:"#b0b0b0a1"}}>
+    <div style={{ background: "#b0b0b0a1" }}>
       <>
-        <Typography variant="h4" align="center" sx={{mt:8}} style={{  fontWeight: "bold"}}>{`הפרויקטים שלך`}</Typography>
+        <Typography
+          variant="h4"
+          align="center"
+          sx={{ mt: 8 }}
+          style={{ fontWeight: "bold" }}
+        >{`הפרויקטים שלך`}</Typography>
         <Grid
           container
           direction="row"
@@ -57,10 +62,6 @@ const Projects = ({ data, onId }: IDtat) => {
             );
           })}
         </Grid>
-      
-      
-      
-
       </>
     </div>
   );
