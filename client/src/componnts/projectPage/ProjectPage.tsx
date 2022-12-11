@@ -17,6 +17,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Dayjs } from "dayjs";
 interface IProps {
   projectId: string | undefined;
 }
@@ -35,8 +36,8 @@ interface ITask {
   _id: string;
   projectId: string;
   taskDescription: string;
-  startDate: string;
-  endDate: string;
+  startDate: Dayjs;
+  endDate: Dayjs;
   taskTag: string;
   taskStatus: string;
 }
@@ -63,7 +64,7 @@ const ProjectPage = ({ projectId }: IProps) => {
         setRefreshingforProject(false);
       })
       .catch((err) => console.log(err));
-  }, [refreshingforProject]);
+  }, [refreshingforProject ]);
 
   React.useEffect(() => {
     //בקשה לקבלת כל המשימות
@@ -75,7 +76,7 @@ const ProjectPage = ({ projectId }: IProps) => {
         setRefreshingforTask(false);
       })
       .catch((err) => console.log(err));
-  }, [refreshingforTask]);
+  }, [refreshingforTask ]);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,

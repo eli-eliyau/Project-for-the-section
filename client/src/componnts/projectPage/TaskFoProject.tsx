@@ -7,13 +7,14 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import EditTaskPage from "./editTaskPage";
+import dayjs, { Dayjs } from "dayjs";
 
 interface ITask {
   _id: string;
   projectId: string;
   taskDescription: string;
-  startDate: string;
-  endDate: string;
+  startDate: Dayjs;
+  endDate: Dayjs;
   taskTag: string;
   taskStatus: string;
 }
@@ -49,8 +50,8 @@ const Task = ({ taskData, onTaskStatus, onRefreshingToTask }: IProps) => {
           <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
             {`תיאור המשימה:${taskData.taskDescription}`}
             <br />
-            {`תאריך התחלה:${taskData.startDate} `}
-            {`תאריך סיום:${taskData.endDate}`}
+            {`תאריך התחלה:${dayjs(taskData.startDate).format('DD/MM/YYYY')} `}
+            {`תאריך סיום:${dayjs(taskData.endDate).format('DD/MM/YYYY')}`}
             <br />
             {`סטטוס משימה:${taskData.taskStatus} `}
             <br />

@@ -12,7 +12,7 @@ import "dayjs/locale/fr";
 import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { cacheRtl, theme } from "../SignIn";
-
+import "dayjs/locale/he";
 interface IProps {
   projectId: string | undefined;
   onEnterNewTask: (enter: boolean) => void;
@@ -24,8 +24,8 @@ const NewTask = ({ projectId, onEnterNewTask, onRefreshing }: IProps) => {
 
   //קשור לתאריך מאיזה פורמט יהיה
 
-  const [locale, setLocale] = useState<typeof locales[number]>("fr");
-  const locales = ["fr"] as const;
+  const [locale, setLocale] = useState<typeof locales[number]>("he");
+  const locales = ["he"];
   const [startDate1, setStartDate1] = useState<Dayjs | null | string>(dayjs());
   const [startDate, setStartDate] = useState<Dayjs | null | string>(
     dayjs().format("DD/MM/YYYY")
