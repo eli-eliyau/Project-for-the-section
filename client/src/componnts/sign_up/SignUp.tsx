@@ -16,42 +16,45 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
-  
+
 interface IProps {
-  onUserToken: (token: string|undefined) => void;
+  onUserToken: (token: string | undefined) => void;
 }
 
-export default function SignUp({onUserToken}:IProps) {
-
-
+export default function SignUp({ onUserToken }: IProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    axios.post("http://localhost:3001/signUpPage",{name:data.get("firstName"),pass:data.get("password")}).then((res)=>{
-
-      axios
-      .post("http://localhost:3001/signInPage", { pass: data.get("password") })
+    axios
+      .post("http://localhost:3001/signUpPage", {
+        name: data.get("firstName"),
+        pass: data.get("password"),
+      })
       .then((res) => {
-
-        console.log(res.data.token);
-        
         axios
-          .get("http://localhost:3001/authenticationToken", {
-            headers: {
-              "x-api-key": res.data.token,
-            },
+          .post("http://localhost:3001/signInPage", {
+            pass: data.get("password"),
           })
           .then((res) => {
-            onUserToken(res.data.token);
+            console.log(res.data.token);
+
+            axios
+              .get("http://localhost:3001/authenticationToken", {
+                headers: {
+                  "x-api-key": res.data.token,
+                },
+              })
+              .then((res) => {
+                onUserToken(res.data.token);
+              })
+              .catch((err) => console.log(err));
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+          });
       })
-      .catch((err) => {
-        console.log(err);
-      });
-    }).catch((err)=>console.log(err)
-    )
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -79,7 +82,7 @@ export default function SignUp({onUserToken}:IProps) {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} >
+              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
@@ -95,7 +98,7 @@ export default function SignUp({onUserToken}:IProps) {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="סיסמה"
                   type="password"
                   id="password"
                   autoComplete="new-password"
