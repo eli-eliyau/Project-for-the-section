@@ -28,6 +28,9 @@ const RoutesFront = () => {
     token: string;
     role: string;
   }>();
+  // const [userValid, setUserValid] = useState<string | null>();
+  console.log(userToken);
+
   useEffect(() => {
     //בקשה אימות לתוקן שקביל היוזר בכניסה למערכת לתוקן שנימצא בדאתא
     axios
@@ -35,17 +38,20 @@ const RoutesFront = () => {
         token: userToken,
       })
       .then((res) => {
+        console.log(res.data);
+
         setUser(res.data);
         {
-          res.data && localStorage.setItem("user", String("1"));
+          res.data.token && localStorage.setItem("user", "1");
+          // res.data.token && setUserValid(localStorage.getItem("user"));
         }
       })
       .catch((err) => {
         console.error(err);
       });
   }, [userToken]);
+  // console.log(userValid);
   let userValid = localStorage.getItem("user");
-  console.log(user?.name);
   return (
     <Fragment>
       {/* {userValid && <HeaderBar onData={setProjectData} />} */}
@@ -61,15 +67,21 @@ const RoutesFront = () => {
           />
           <Route path="*" element={<Navigate replace to="/login" />} />
         </Routes>
-      ) : (
+      ) : userValid === "1" ? (
         <>
-          <HeaderBar onData={setProjectData} user={user}/>
+          <HeaderBar onData={setProjectData} user={user} />
           <Routes>
             <Route path="*" element={<Navigate to="/projects" replace />} />
             <Route
               path="/projects"
               // element={<Projects data={projectData} onId={setProjectId} />}
-              element={<P data={projectData} userName={user?.name} onId={setProjectId}/>}
+              element={
+                <P
+                  data={projectData}
+                  userName={user?.name}
+                  onId={setProjectId}
+                />
+              }
             />
             <Route
               path="/project"
@@ -78,6 +90,8 @@ const RoutesFront = () => {
             <Route path="/create-new-project" element={<CreateNewProject />} />
           </Routes>
         </>
+      ) : (
+        ""
       )}
     </Fragment>
   );

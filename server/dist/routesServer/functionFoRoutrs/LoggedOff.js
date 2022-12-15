@@ -15,8 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const UsersSchema_1 = __importDefault(require("../../schemas/UsersSchema"));
 const LoggedOff = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userLoggedOff = yield UsersSchema_1.default.findOneAndUpdate({ name: req.body.name }, { token: "" });
+        const userLoggedOff = yield UsersSchema_1.default.findOneAndUpdate({ name: req.body.name }, { token: null });
         // userLoggedOff?.save()
+        console.log(userLoggedOff);
         res.send(userLoggedOff);
     }
     catch (err) {

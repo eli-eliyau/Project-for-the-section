@@ -8,9 +8,8 @@ export const signInPage = async (
   res: Response,
   next: NextFunction
 ) => {
-
   try {
-    const user = await  UsersSchema.findOne({ pass: req.body.pass });
+    const user = await UsersSchema.findOne({ pass: req.body.pass });
     if (user?.pass === req.body.pass) {
       let newToken = genToken(user?._id);
       //מכניס את התוקן שנשלח ליוזר בכניסה למערכת גם לדאתא כדי לאמת בכל כניסה לדף בפרונט
@@ -34,6 +33,7 @@ export const authenticationToken = async (
   try {
     let token: any = req.header("x-api-key");
     let userId = jwt.verify(token, "ELI");
+
     req.body.userId = userId;
   } catch (error) {
     console.log(error);
@@ -48,6 +48,7 @@ export const fo = async (req: Request, res: Response) => {
       { _id: req.body.userId },
       { dade_created: 0, pass: 0 }
     );
+    console.log(user);
 
     return res.json(user);
   } catch (err) {

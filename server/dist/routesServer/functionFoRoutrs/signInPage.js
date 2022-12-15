@@ -71,6 +71,7 @@ exports.authenticationToken = authenticationToken;
 const fo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let user = yield UsersSchema_1.default.findOne({ _id: req.body.userId }, { dade_created: 0, pass: 0 });
+        console.log(user);
         return res.json(user);
     }
     catch (err) {

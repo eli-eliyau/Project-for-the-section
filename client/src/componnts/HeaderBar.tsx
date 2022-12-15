@@ -11,9 +11,7 @@ import { setRef } from "@mui/material/utils";
 
 interface IProps {
   onData: (id: IArr[] | undefined) => void;
-  user:{ name: string,
-    token: string,
-    role: string,}|undefined
+  user: { name: string; token: string; role: string } | undefined;
 }
 interface IArr {
   _id: string;
@@ -22,7 +20,7 @@ interface IArr {
   situation: string;
 }
 
-const HeaderBar = ({ onData ,user}: IProps) => {
+const HeaderBar = ({ onData, user }: IProps) => {
   const [projects, setProjects] = useState<IArr[]>();
   const [getProjectData, setGetProjectData] = useState<Boolean>(false);
   const [r, setR] = useState(true);
@@ -86,8 +84,12 @@ const HeaderBar = ({ onData ,user}: IProps) => {
               sx={{ color: "#fff", mt: 0.5 }}
               onClick={() => {
                 localStorage.removeItem("user");
-                axios.post("http://localhost:3001/logged-off",{name:user?.name}).catch((err)=>console.log(err)
-                )
+                axios
+                  .post("http://localhost:3001/logged-off", {
+                    name: user?.name,
+                  })
+                  .then((res) => {})
+                  .catch((err) => console.log(err));
                 navigate(0);
               }}
             >
