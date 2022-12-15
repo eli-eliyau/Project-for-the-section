@@ -37,9 +37,9 @@ const P = ({ data, userName, onId }: IProps) => {
       >
         <Grid
           container
-          // direction="row"
-          // justifyContent="center"
-          // alignItems="center"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
         >
           {data?.map((tier) => (
             // Enterprise card is full width at sm breakpoint
