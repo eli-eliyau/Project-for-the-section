@@ -42,7 +42,7 @@ const RoutesFront = () => {
 
         setUser(res.data);
         {
-          res.data.token && localStorage.setItem("user", "1");
+          res.data.token && localStorage.setItem("user", `1`);
           // res.data.token && setUserValid(localStorage.getItem("user"));
         }
       })
@@ -67,7 +67,7 @@ const RoutesFront = () => {
           />
           <Route path="*" element={<Navigate replace to="/login" />} />
         </Routes>
-      ) : userValid === "1" ? (
+      ) : userValid === `1` ? (
         <>
           <HeaderBar onData={setProjectData} user={user} />
           <Routes>

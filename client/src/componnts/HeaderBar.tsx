@@ -84,6 +84,7 @@ const HeaderBar = ({ onData, user }: IProps) => {
               sx={{ color: "#fff", mt: 0.5 }}
               onClick={() => {
                 localStorage.removeItem("user");
+                localStorage.removeItem("userName");
                 axios
                   .post("http://localhost:3001/logged-off", {
                     name: user?.name,

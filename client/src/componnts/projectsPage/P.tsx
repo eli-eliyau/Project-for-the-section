@@ -23,11 +23,13 @@ interface IDtat {
 
 const P = ({ data, userName, onId }: IProps) => {
   const navigte = useNavigate();
+
+  userName && localStorage.setItem("userName", `${userName}`);
   return (
     <>
       {/* End hero unit */}
       <Typography variant="h3" sx={{ mt: 6 }}>
-        {userName ? `ברוך הבא  ${userName}` : "ברוך הבא"}
+        {`ברוך הבא ${localStorage.getItem("userName")}`}
       </Typography>
       <Box
         sx={{

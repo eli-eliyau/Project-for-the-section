@@ -13,19 +13,17 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import createCache from "@emotion/cache";
 import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import { prefixer } from "stylis";
 
 interface IProps {
-  onUserToken: (token: string|undefined) => void;
+  onUserToken: (token: string | undefined) => void;
 }
 
 // import { createTheme } from "@material-ui/core";
-
-
 
 export const theme = createTheme({
   direction: "ltr",
@@ -36,10 +34,7 @@ export const cacheRtl = createCache({
   stylisPlugins: [prefixer, rtlPlugin],
 });
 
-     
-
 export default function SignIn({ onUserToken }: IProps) {
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -63,68 +58,73 @@ export default function SignIn({ onUserToken }: IProps) {
       .catch((err) => {
         console.log(err);
       });
-
   };
 
   return (
     <CacheProvider value={cacheRtl}>
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        {/* <CssBaseline /> */}
-        <Box
-        
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            {"ברוך הבא למערכת"}
-          </Typography>
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          {/* <CssBaseline /> */}
           <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="name"
-              label="שם"
-              name="name"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="סיסמה"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
+            <Typography component="h1" variant="h5">
+              {"ברוך הבא למערכת"}
+            </Typography>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
             >
-              {"התחברות"}
-            </Button>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="name"
+                label="שם"
+                name="name"
+                autoComplete="name"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="סיסמה"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                {"התחברות"}
+              </Button>
+            </Box>
+            <Link
+              to={"/sing-up"}
+              style={{
+                textDecoration: "none",
+                fontFamily: "Arial",
+                color: "#000000",
+              }}
+            >
+              {"הרשמה למערכת"}
+            </Link>
           </Box>
-          <Link to={"/sing-up"} style={{textDecoration:"none" ,fontFamily:"Arial" , color:"#000000"}}>{"הרשמה למערכת"}</Link>
-
-        </Box>
-      </Container>
-    </ThemeProvider>
+        </Container>
+      </ThemeProvider>
     </CacheProvider>
   );
 }
