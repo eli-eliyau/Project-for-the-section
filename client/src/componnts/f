@@ -1,0 +1,120 @@
+//   <Grid
+//     container
+//     direction="row"
+//     justifyContent="center"
+//     alignItems="flex-start"
+//   >
+//     <Box
+//       sx={{
+//         display: "flex",
+//         flexDirection: "column",
+//         alignItems: "center",
+//       }}
+//     >
+//       <Api task={task} />
+//       <Typography
+//         sx={{ fontSize: 26 }}
+//         color="text.secondary"
+//         gutterBottom
+//       >
+//         {"משימות:"}
+//       </Typography>
+//       <Stack spacing={3}>
+//         <Stack
+//           direction="row"
+//           spacing={0.5}
+//           divider={<Divider orientation="vertical" />}
+//         >
+//           <Button
+//             variant="outlined"
+//             color="success"
+//             sx={{ width: 150, boxShadow: 2 }}
+//             onClick={() => {
+//               setTaskStatus("פעיל");
+//               setEnterEditProject(false);
+//               setEnterNewTask(false);
+//             }}
+//           >
+//             {"משימות פעילות"}
+//           </Button>
+//           <Button
+//             color="error"
+//             variant="outlined"
+//             sx={{ width: 150, boxShadow: 2 }}
+//             onClick={() => {
+//               setTaskStatus("לא פעיל");
+//               setEnterEditProject(false);
+//               setEnterNewTask(false);
+//             }}
+//           >
+//             {"משימות לא פעילות"}
+//           </Button>
+//           <Button
+//             variant="outlined"
+//             sx={{ width: 150, boxShadow: 2, mt: 3 }}
+//             onClick={() => {
+//               setEnterNewTask(true);
+//               setEnterEditProject(false);
+//               setTaskStatus("");
+//             }}
+//           >
+//             {"משימה חדשה"}
+//           </Button>
+//           <Button
+//             variant="outlined"
+//             sx={{ width: 150, boxShadow: 2, mt: 3 }}
+//             onClick={() => {
+//               setEnterEditProject(true);
+//               setEnterNewTask(false);
+//               setTaskStatus("");
+//             }}
+//           >
+//             {"עריכת פרויקט"}
+//           </Button>
+//         </Stack>
+//       </Stack>
+//       {task?.map((item, key) => {
+//         return (
+//           item.taskStatus === taskStatus && (
+//             <Task
+//               taskData={item}
+//               key={key}
+//               onTaskStatus={setTaskStatus}
+//               onRefreshingToTask={setRefreshingforTask}
+//             />
+//           )
+//         );
+//       })}
+//       {enterNewTask && (
+//         <NewTask
+//           projectId={projectId}
+//           onEnterNewTask={setEnterNewTask}
+//           onRefreshing={setRefreshingforTask}
+//         />
+//       )}
+//       {enterEditProject && (
+//         <>
+//           <EditProjectPage
+//             projectId={projectId}
+//             dataProject={dataProject}
+//             onEnterEditProject={setEnterEditProject}
+//             onRefreshingforProject={setRefreshingforProject}
+//           />
+//         </>
+//       )}
+//     </Box>
+//   </Grid>
+// </Grid>
+
+
+
+//        sx={{
+//        width: {
+//          xs: "100%", //0
+//          sm: "100%", //600
+//          md: "100%", //900
+//          lg: "100%", //1200
+//          xl: "100%", //1536
+//        },
+//        height: 300,
+//      }}
