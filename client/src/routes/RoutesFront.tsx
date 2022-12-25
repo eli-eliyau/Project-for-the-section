@@ -29,8 +29,6 @@ const RoutesFront = () => {
     role: string;
   }>();
   // const [userValid, setUserValid] = useState<string | null>();
-  console.log(userToken);
-
   useEffect(() => {
     //בקשה אימות לתוקן שקביל היוזר בכניסה למערכת לתוקן שנימצא בדאתא
     axios
@@ -38,12 +36,9 @@ const RoutesFront = () => {
         token: userToken,
       })
       .then((res) => {
-        console.log(res.data);
-
         setUser(res.data);
         {
           res.data.token && localStorage.setItem("user", `1`);
-          // res.data.token && setUserValid(localStorage.getItem("user"));
         }
       })
       .catch((err) => {

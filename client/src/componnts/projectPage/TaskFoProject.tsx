@@ -47,15 +47,16 @@ const Task = ({ taskData, onTaskStatus, onRefreshingToTask }: IProps) => {
       >
         <CardContent>
           {/* <Box style={{width:150}}> */}
+
           <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
             {`תיאור המשימה:${taskData.taskDescription}`}
             <br />
-            {`תאריך התחלה:${dayjs(taskData.startDate).format('DD/MM/YYYY')} `}
-            {`תאריך סיום:${dayjs(taskData.endDate).format('DD/MM/YYYY')}`}
+            {`תאריך התחלה:${taskData.startDate} `}
+            {`תאריך סיום:${taskData.endDate}`}
             <br />
             {`סטטוס משימה:${taskData.taskStatus} `}
             <br />
-            {`תג משימה:${taskData.taskTag}`}
+            {/* {`תג משימה:${taskData.taskTag}`} */}
             {/* כאן צריך להוסיף את הנספחים*/}
           </Typography>
           {/* </Box> */}

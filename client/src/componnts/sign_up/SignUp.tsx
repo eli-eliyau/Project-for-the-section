@@ -3,9 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -13,49 +10,76 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { CacheProvider } from "@emotion/react";
 import { cacheRtl } from "../SignIn";
+import { useForm } from "react-hook-form";
+
 const theme = createTheme();
 
 interface IProps {
   onUserToken: (token: string | undefined) => void;
 }
+interface FormInputs {
+  name: string;
+  password: string;
+  errorServer: string;
+}
 
 export default function SignUp({ onUserToken }: IProps) {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    clearErrors,
+  } = useForm<FormInputs>({
+    defaultValues: {
+      name: "",
+      password: "",
+    },
+  });
+  const onSubmit = (data: FormInputs) => {
     axios
       .post("http://localhost:3001/signUpPage", {
-        name: data.get("firstName"),
-        pass: data.get("password"),
+        name: data.name,
+        pass: data.password,
       })
       .then((res) => {
-        axios
-          .post("http://localhost:3001/signInPage", {
-            pass: data.get("password"),
-          })
-          .then((res) => {
-            console.log(res.data.token);
+        console.log(res.data);
+        res.data.name === data.name
+          ? axios
+              .post("http://localhost:3001/signInPage", {
+                name: data.name,
 
-            axios
-              .get("http://localhost:3001/authenticationToken", {
-                headers: {
-                  "x-api-key": res.data.token,
-                },
+                pass: data.password,
               })
               .then((res) => {
-                onUserToken(res.data.token);
+                console.log(res.data.token);
+                axios
+                  .get("http://localhost:3001/authenticationToken", {
+                    headers: {
+                      "x-api-key": res.data.token,
+                    },
+                  })
+                  .then((res) => {
+                    onUserToken(res.data.token);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               })
-              .catch((err) => console.log(err));
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+              .catch((err) => {
+                console.log(err);
+              })
+          : setError("errorServer", {
+              type: "custom",
+              // message: "משתמש קיים במערכת",
+              message: `${res.data}`,
+            });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -81,31 +105,50 @@ export default function SignUp({ onUserToken }: IProps) {
               <Box
                 component="form"
                 noValidate
-                onSubmit={handleSubmit}
+                onSubmit={handleSubmit(onSubmit)}
                 sx={{ mt: 3 }}
               >
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
                       autoComplete="given-name"
-                      name="firstName"
                       required
                       fullWidth
                       id="firstName"
                       label="שם מלא"
                       autoFocus
+                      {...register("name", {
+                        required: "שדה חובה",
+                        maxLength: {
+                          value: 10,
+                          message: "שם המלא עד 10 תויים",
+                        },
+                      })}
                     />
+                    <Typography color={"red"}>
+                      {errors.name && errors.name.message}
+                    </Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       required
                       fullWidth
-                      name="password"
                       label="סיסמה"
                       type="password"
                       id="password"
                       autoComplete="new-password"
+                      {...register("password", {
+                        required: "שדה חובה",
+                        maxLength: { value: 5, message: "הכנס עד 5 תווים" },
+                        minLength: { value: 3, message: "הכנס 3-5 תווים " },
+                      })}
+                      onChange={() => {
+                        clearErrors("errorServer");
+                      }}
                     />
+                    <Typography color={"red"}>
+                      {errors.password && errors.password.message}
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Button
@@ -116,6 +159,9 @@ export default function SignUp({ onUserToken }: IProps) {
                 >
                   {"כניסה"}
                 </Button>
+                <Typography color={"red"}>
+                  {errors.errorServer?.message}
+                </Typography>
               </Box>
             </Box>
           </Container>
