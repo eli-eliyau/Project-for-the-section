@@ -218,6 +218,7 @@ const EditProjectPage = ({
                     background: "#b0b0b0a1",
                     borderRadius: "15px",
                     fontFamily: "Arial",
+                    backgroundColor: "#ffff",
                   }}
                   onChange={(e) => {
                     setProjectDescription(e.target.value);

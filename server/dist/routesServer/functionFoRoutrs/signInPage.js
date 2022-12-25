@@ -41,16 +41,30 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 //הפונקציה מאמתת את הסיסמא של היוזר ויוצרת תוקן ע"י פונקציה
 const signInPage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield UsersSchema_1.default.findOne({ pass: req.body.pass });
-        if ((user === null || user === void 0 ? void 0 : user.pass) === req.body.pass) {
-            let newToken = (0, UsersSchema_1.genToken)(user === null || user === void 0 ? void 0 : user._id);
-            //מכניס את התוקן שנשלח ליוזר בכניסה למערכת גם לדאתא כדי לאמת בכל כניסה לדף בפרונט
-            yield UsersSchema_1.default.findOneAndUpdate({ _id: user === null || user === void 0 ? void 0 : user._id }, { token: newToken });
-            return res.json({ token: newToken });
+        const user = (yield UsersSchema_1.default.findOne({ name: req.body.name })) ||
+            (yield UsersSchema_1.default.findOne({ pass: req.body.pass }));
+        if (user) {
+            if ((user === null || user === void 0 ? void 0 : user.name) === req.body.name) {
+                if ((user === null || user === void 0 ? void 0 : user.pass) === req.body.pass) {
+                    let newToken = (0, UsersSchema_1.genToken)(user === null || user === void 0 ? void 0 : user._id);
+                    //מכניס את התוקן שנשלח ליוזר בכניסה למערכת גם לדאתא כדי לאמת בכל כניסה לדף בפרונט
+                    yield UsersSchema_1.default.findOneAndUpdate({ _id: user === null || user === void 0 ? void 0 : user._id }, { token: newToken });
+                    return res.send({ token: newToken });
+                }
+                else {
+                    return res.send("סיסמא אינה נכונה");
+                }
+            }
+            else {
+                return res.send("שם משתמש אינו נכון");
+            }
         }
+        else
+            return res.send("משתמש לא קיים במערכת");
     }
     catch (error) {
         console.log(error);
+        return res.status(401).send(false);
     }
 });
 exports.signInPage = signInPage;

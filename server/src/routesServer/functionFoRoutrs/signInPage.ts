@@ -9,18 +9,30 @@ export const signInPage = async (
   next: NextFunction
 ) => {
   try {
-    const user = await UsersSchema.findOne({ pass: req.body.pass });
-    if (user?.pass === req.body.pass) {
-      let newToken = genToken(user?._id);
-      //מכניס את התוקן שנשלח ליוזר בכניסה למערכת גם לדאתא כדי לאמת בכל כניסה לדף בפרונט
-      await UsersSchema.findOneAndUpdate(
-        { _id: user?._id },
-        { token: newToken }
-      );
-      return res.json({ token: newToken });
-    }
+    const user =
+      (await UsersSchema.findOne({ name: req.body.name })) ||
+      (await UsersSchema.findOne({ pass: req.body.pass }));
+    if (user) {
+      if (user?.name === req.body.name) {
+        if (user?.pass === req.body.pass) {
+          let newToken = genToken(user?._id);
+          //מכניס את התוקן שנשלח ליוזר בכניסה למערכת גם לדאתא כדי לאמת בכל כניסה לדף בפרונט
+          await UsersSchema.findOneAndUpdate(
+            { _id: user?._id },
+            { token: newToken }
+          );
+
+          return res.send({ token: newToken });
+        } else {
+          return res.send("סיסמא אינה נכונה");
+        }
+      } else {
+        return res.send("שם משתמש אינו נכון");
+      }
+    } else return res.send("משתמש לא קיים במערכת");
   } catch (error) {
     console.log(error);
+    return res.status(401).send(false);
   }
 };
 
